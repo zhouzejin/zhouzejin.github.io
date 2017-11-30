@@ -101,7 +101,7 @@
     root: '/',
     scheme: 'Muse',
     version: '5.1.3',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
     fancybox: true,
     tabs: true,
     motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
@@ -411,7 +411,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># Deployment</span><br><span class="line">## Docs: https://hexo.io/docs/deployment.html</span><br><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repo: git@github.com:zhouzejin/zhouzejin.github.io.git</span><br></pre></td></tr></table></figure>
 <h1 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h1><p>网站创建和配置完毕后，接着就可以撰写博客，并进行发布了。</p>
 <h2 id="新建"><a href="#新建" class="headerlink" title="新建"></a>新建</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new [layout] &lt;title&gt;</span><br></pre></td></tr></table></figure>
-<p>如果没有设置 layout 的话，默认使用<em>_config.yml</em>中的 default_layout 参数代替。如果标题包含空格的话，请使用引号括起来。</p>
+<p>如果没有设置 layout 的话，默认使用<em>_config.yml</em>中的 default_layout 参数代替。如果标题包含空格，要使用引号括起来。</p>
 <p>创建的文章在<em>username.github.io/source/_posts</em>目录下，默认是Markdown文件，在具体撰写博客前，可以学习一下Markdown语法。</p>
 <h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
 <p>启动本地服务器。默认情况下，访问网址为： <a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a></p>
@@ -443,8 +443,46 @@
 </blockquote>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server -p 5000</span><br></pre></td></tr></table></figure>
 <p>服务器启动后，就可以浏览文章的排版和效果，如果不满意，可以直接修改文章对应的Markdown文件，修改完毕后，直接刷新就可以看到修改后的效果，不必重启Server。</p>
-<h2 id="发布"><a href="#发布" class="headerlink" title="发布"></a>发布</h2><p>使用Git发布需要先安装hexo-deployer-git：</p>
+<h2 id="发布"><a href="#发布" class="headerlink" title="发布"></a>发布</h2><p>使用Git发布需要先安装hexo-deployer-git插件（更多插件使用可以参考<a href="https://hexo.io/plugins/" target="_blank" rel="noopener">Hexo插件</a>）：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+<p>发布前先要生成网站的静态文件：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>生成完毕后就可以进行发布：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>生成和发布操作可以使用一个命令完成：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo d -g</span><br></pre></td></tr></table></figure>
+<p>发布成功后，在浏览器输入<em>username.github.io</em>就可以进行访问了。</p>
+<p><strong>注意</strong></p>
+<blockquote>
+<p>在某些情况（尤其是更换主题后），如果发现对网站的更改无论如何也不生效，可以使用clean命令清除缓存文件(db.json)和已生成的静态文件(public)，然后再进行发布。</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean</span><br></pre></td></tr></table></figure>
+<p>Hexo的更多使用可以参考<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">Hexo官网文档</a></p>
+<h1 id="自定义主题"><a href="#自定义主题" class="headerlink" title="自定义主题"></a>自定义主题</h1><p>经过以上步骤，个人博客就搭建完毕了，但是为让自己的博客更美观，可以更换默认主题，这里使用现在比较流行的<a href="https://github.com/iissnan/hexo-theme-next" target="_blank" rel="noopener">NexT主题</a>，如果需要使用其它主题，可以参考<a href="https://hexo.io/themes/" target="_blank" rel="noopener">Hexo主题</a>。</p>
+<p>下面只对我自己用到的主题配置和第三方服务进行总结，更多配置和服务可以参考<a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">NexT使用文档</a>。</p>
+<h2 id="主题安装"><a href="#主题安装" class="headerlink" title="主题安装"></a>主题安装</h2><h3 id="下载主题"><a href="#下载主题" class="headerlink" title="下载主题"></a>下载主题</h3><p>在终端窗口下，定位到Hexo站点目录下。使用Git checkout代码：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">cd</span> your-hexo-site</span><br><span class="line">$ git <span class="built_in">clone</span> https://github.com/iissnan/hexo-theme-next themes/next</span><br></pre></td></tr></table></figure>
+<h3 id="启用主题"><a href="#启用主题" class="headerlink" title="启用主题"></a>启用主题</h3><p>在网站的<em>_config.yml</em>文件中，找到<strong>theme</strong>字段，并将其值更改为<strong>next</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Extensions</span><br><span class="line">## Plugins: https://hexo.io/plugins/</span><br><span class="line">## Themes: https://hexo.io/themes/</span><br><span class="line">theme: next</span><br></pre></td></tr></table></figure>
+<h2 id="主题配置"><a href="#主题配置" class="headerlink" title="主题配置"></a>主题配置</h2><p>如果没有特殊说明，主题的配置都是在主题的<em>_config.yml</em>文件中进行的。</p>
+<h3 id="菜单配置"><a href="#菜单配置" class="headerlink" title="菜单配置"></a>菜单配置</h3><p>每个菜单项目的配置都是类似的，接下来以配置about菜单进行说明：</p>
+<ul>
+<li>创建一个名为about的页面</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo new page <span class="string">"about"</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>编辑分类页, 设置页面类型为about</li>
+</ul>
+<figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">title: 关于</span><br><span class="line">date: 2017-11-24 16:00:52</span><br><span class="line">type: "about"</span><br></pre></td></tr></table></figure>
+<ul>
+<li>添加about到主题配置文件里</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">menu:</span><br><span class="line">  home: / || home</span><br><span class="line">  categories: /categories/ || th</span><br><span class="line">  tags: /tags/ || tags</span><br><span class="line">  archives: /archives/ || archive</span><br><span class="line">  about: /about/ || user</span><br><span class="line">  #schedule: /schedule/ || calendar</span><br><span class="line">  #sitemap: /sitemap.xml || sitemap</span><br><span class="line">  #commonweal: /404/ || heartbeat</span><br></pre></td></tr></table></figure>
+<h2 id="第三方服务"><a href="#第三方服务" class="headerlink" title="第三方服务"></a>第三方服务</h2><blockquote>
+<p>参考资料</p>
+</blockquote>
+<p><a href="http://www.jianshu.com/p/4eaddcbe4d12" target="_blank" rel="noopener">5分钟 搭建免费个人博客</a><br><a href="https://hexo.io/zh-cn/" target="_blank" rel="noopener">Hexo官方文档</a><br><a href="http://theme-next.iissnan.com/" target="_blank" rel="noopener">NexT使用文档</a></p>
+
       
     </div>
     
@@ -520,6 +558,8 @@
   </div>
 
   <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
     
     <div class="sidebar-inner">
 
@@ -609,7 +649,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#创建域名和空间"><span class="nav-number">1.</span> <span class="nav-text">创建域名和空间</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建GitHub域名"><span class="nav-number">1.1.</span> <span class="nav-text">创建GitHub域名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建Blog存储空间"><span class="nav-number">1.2.</span> <span class="nav-text">创建Blog存储空间</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装必要的工具"><span class="nav-number">2.</span> <span class="nav-text">安装必要的工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Git"><span class="nav-number">2.1.</span> <span class="nav-text">安装Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Node-js"><span class="nav-number">2.2.</span> <span class="nav-text">安装Node.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Hexo"><span class="nav-number">2.3.</span> <span class="nav-text">安装Hexo</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建网站和配置"><span class="nav-number">3.</span> <span class="nav-text">创建网站和配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建网站"><span class="nav-number">3.1.</span> <span class="nav-text">创建网站</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本配置"><span class="nav-number">3.2.</span> <span class="nav-text">基本配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网站配置"><span class="nav-number">3.2.1.</span> <span class="nav-text">网站配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署配置"><span class="nav-number">3.2.2.</span> <span class="nav-text">部署配置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#工作流程"><span class="nav-number">4.</span> <span class="nav-text">工作流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#新建"><span class="nav-number">4.1.</span> <span class="nav-text">新建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">4.2.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发布"><span class="nav-number">4.3.</span> <span class="nav-text">发布</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#创建域名和空间"><span class="nav-number">1.</span> <span class="nav-text">创建域名和空间</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建GitHub域名"><span class="nav-number">1.1.</span> <span class="nav-text">创建GitHub域名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建Blog存储空间"><span class="nav-number">1.2.</span> <span class="nav-text">创建Blog存储空间</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装必要的工具"><span class="nav-number">2.</span> <span class="nav-text">安装必要的工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Git"><span class="nav-number">2.1.</span> <span class="nav-text">安装Git</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Node-js"><span class="nav-number">2.2.</span> <span class="nav-text">安装Node.js</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Hexo"><span class="nav-number">2.3.</span> <span class="nav-text">安装Hexo</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建网站和配置"><span class="nav-number">3.</span> <span class="nav-text">创建网站和配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建网站"><span class="nav-number">3.1.</span> <span class="nav-text">创建网站</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基本配置"><span class="nav-number">3.2.</span> <span class="nav-text">基本配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#网站配置"><span class="nav-number">3.2.1.</span> <span class="nav-text">网站配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#部署配置"><span class="nav-number">3.2.2.</span> <span class="nav-text">部署配置</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#工作流程"><span class="nav-number">4.</span> <span class="nav-text">工作流程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#新建"><span class="nav-number">4.1.</span> <span class="nav-text">新建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">4.2.</span> <span class="nav-text">测试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#发布"><span class="nav-number">4.3.</span> <span class="nav-text">发布</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义主题"><span class="nav-number">5.</span> <span class="nav-text">自定义主题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#主题安装"><span class="nav-number">5.1.</span> <span class="nav-text">主题安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#下载主题"><span class="nav-number">5.1.1.</span> <span class="nav-text">下载主题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#启用主题"><span class="nav-number">5.1.2.</span> <span class="nav-text">启用主题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主题配置"><span class="nav-number">5.2.</span> <span class="nav-text">主题配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#菜单配置"><span class="nav-number">5.2.1.</span> <span class="nav-text">菜单配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#第三方服务"><span class="nav-number">5.3.</span> <span class="nav-text">第三方服务</span></a></li></ol></li></ol></div>
             
 
           </div>
