@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="滑动效果," />
 
 
 
@@ -81,16 +81,22 @@
 
 
 
-<meta name="description" content="Sunny的个人Blog，主要记录Android学习总结，欢迎交流~">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Zhou Zejin&#39;s Home">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+<meta name="description" content="滑动的产生View的滑动，本质上是移动View，即改变View所处的位置，这点和动画效果类似，都是通过不断改变View的坐标来实现的。 因此，要产生滑动效果，需要监听用户的触摸事件，根据事件的坐标信息不断改变View的坐标，使View跟随用户的触摸进行移动。 滑动是相对的移动，要实现滑动，就必须了解Android系统中">
+<meta name="keywords" content="滑动效果">
+<meta property="og:type" content="article">
+<meta property="og:title" content="滑动实现原理">
+<meta property="og:url" content="http://yoursite.com/2017/12/26/滑动实现原理/index.html">
 <meta property="og:site_name" content="Zhou Zejin&#39;s Home">
-<meta property="og:description" content="Sunny的个人Blog，主要记录Android学习总结，欢迎交流~">
+<meta property="og:description" content="滑动的产生View的滑动，本质上是移动View，即改变View所处的位置，这点和动画效果类似，都是通过不断改变View的坐标来实现的。 因此，要产生滑动效果，需要监听用户的触摸事件，根据事件的坐标信息不断改变View的坐标，使View跟随用户的触摸进行移动。 滑动是相对的移动，要实现滑动，就必须了解Android系统中的坐标体系和触摸事件(MotionEvent)，接下来对坐标体系和触摸事件进行说">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/uploads/android/系统坐标系.png">
+<meta property="og:image" content="http://yoursite.com/uploads/android/视图坐标系.png">
+<meta property="og:image" content="http://yoursite.com/uploads/android/坐标系常用API.png">
+<meta property="og:updated_time" content="2017-12-26T12:01:52.420Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Zhou Zejin&#39;s Home">
-<meta name="twitter:description" content="Sunny的个人Blog，主要记录Android学习总结，欢迎交流~">
+<meta name="twitter:title" content="滑动实现原理">
+<meta name="twitter:description" content="滑动的产生View的滑动，本质上是移动View，即改变View所处的位置，这点和动画效果类似，都是通过不断改变View的坐标来实现的。 因此，要产生滑动效果，需要监听用户的触摸事件，根据事件的坐标信息不断改变View的坐标，使View跟随用户的触摸进行移动。 滑动是相对的移动，要实现滑动，就必须了解Android系统中的坐标体系和触摸事件(MotionEvent)，接下来对坐标体系和触摸事件进行说">
+<meta name="twitter:image" content="http://yoursite.com/uploads/android/系统坐标系.png">
 
 
 
@@ -120,13 +126,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/archives/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/12/26/滑动实现原理/"/>
 
 
 
 
 
-  <title>归档 | Zhou Zejin's Home</title>
+  <title>滑动实现原理 | Zhou Zejin's Home</title>
   
 
 
@@ -145,7 +151,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -283,416 +289,240 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/26/滑动实现原理/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhou Zejin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/Sanji.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhou Zejin's Home">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">滑动实现原理</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-26T19:40:57+08:00">
+                2017-12-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-        嗯..! 目前共计 12 篇日志。 继续努力。
-      </span>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
 
-      
-
-        
-        
-        
-
-        
+                
+                
+              
+            </span>
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
 
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/11/Paint使用/" itemprop="url">
-              
-                <span itemprop="name">Paint使用</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-11T19:09:35+08:00"
-              content="2018-01-11" >
-          01-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/02/图像特效/" itemprop="url">
-              
-                <span itemprop="name">图像特效</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-02T19:58:44+08:00"
-              content="2018-01-02" >
-          01-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/02/XML绘图/" itemprop="url">
-              
-                <span itemprop="name">XML绘图</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-02T10:03:01+08:00"
-              content="2018-01-02" >
-          01-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/02/2D绘图/" itemprop="url">
-              
-                <span itemprop="name">2D绘图</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-02T09:42:10+08:00"
-              content="2018-01-02" >
-          01-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2017">2017</h1>
-          </div>
-        
-        
+            
+          
 
-        
+          
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/29/屏幕信息/" itemprop="url">
-              
-                <span itemprop="name">屏幕信息</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-29T09:43:49+08:00"
-              content="2017-12-29" >
-          12-29
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+        </div>
+      </header>
+    
 
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/27/实现滑动的方法/" itemprop="url">
-              
-                <span itemprop="name">实现滑动的方法</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-27T18:26:58+08:00"
-              content="2017-12-27" >
-          12-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/26/滑动实现原理/" itemprop="url">
-              
-                <span itemprop="name">滑动实现原理</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-26T19:40:57+08:00"
-              content="2017-12-26" >
-          12-26
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <h1 id="滑动的产生"><a href="#滑动的产生" class="headerlink" title="滑动的产生"></a>滑动的产生</h1><p>View的滑动，本质上是移动View，即改变View所处的位置，这点和动画效果类似，都是通过不断改变View的坐标来实现的。</p>
+<p>因此，要产生滑动效果，需要监听用户的触摸事件，根据事件的坐标信息不断改变View的坐标，使View跟随用户的触摸进行移动。</p>
+<p>滑动是相对的移动，要实现滑动，就必须了解Android系统中的坐标体系和触摸事件(MotionEvent)，接下来对坐标体系和触摸事件进行说明。</p>
+<h1 id="系统坐标系"><a href="#系统坐标系" class="headerlink" title="系统坐标系"></a>系统坐标系</h1><p>Android系统的坐标系如下图所示：</p>
+<p><img src="/uploads/android/系统坐标系.png" alt="系统坐标系"></p>
+<p>系统提供了getLocationOnScreen()方法获取View在系统坐标系的位置，即该View左上角在系统坐标系的位置。</p>
+<p>触摸事件中触摸点的系统坐标使用getRawX()和getRawY()方法获取。</p>
+<h1 id="视图坐标系"><a href="#视图坐标系" class="headerlink" title="视图坐标系"></a>视图坐标系</h1><p>除了系统坐标系，Android中还有视图坐标系，它用来描述子View在父View中的位置，系统坐标系如下图所示：</p>
+<p><img src="/uploads/android/视图坐标系.png" alt="视图坐标系"></p>
+<p>触摸事件中触摸点的视图坐标使用getX()和getY()方法获取。</p>
+<h1 id="触摸事件与坐标系"><a href="#触摸事件与坐标系" class="headerlink" title="触摸事件与坐标系"></a>触摸事件与坐标系</h1><p>触摸事件MotionEvent中封装了常用的事件常量，这些常量定义了不同的类型的触摸事件，可以使用getAction()方法获取。</p>
+<p>下面用一幅图来描述一些获取坐标值和相对距离的常用API：</p>
+<p><img src="/uploads/android/坐标系常用API.png" alt="坐标系常用API"></p>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/21/事件拦截机制/" itemprop="url">
-              
-                <span itemprop="name">事件拦截机制</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-21T18:08:19+08:00"
-              content="2017-12-21" >
-          12-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/20/自定义View和ViewGroup/" itemprop="url">
-              
-                <span itemprop="name">自定义View和ViewGroup</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-20T19:05:31+08:00"
-              content="2017-12-20" >
-          12-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/20/控件的测量和绘制/" itemprop="url">
-              
-                <span itemprop="name">控件的测量和绘制</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-20T14:54:17+08:00"
-              content="2017-12-20" >
-          12-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/wechatpay.jpg" alt="Zhou Zejin 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/alipay.jpg" alt="Zhou Zejin 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/滑动效果/" rel="tag"># 滑动效果</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/21/事件拦截机制/" rel="next" title="事件拦截机制">
+                <i class="fa fa-chevron-left"></i> 事件拦截机制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/27/实现滑动的方法/" rel="prev" title="实现滑动的方法">
+                实现滑动的方法 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
 
 
           </div>
@@ -700,6 +530,8 @@
 
 
           
+  
+
 
         </div>
         
@@ -722,8 +554,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -804,6 +645,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#滑动的产生"><span class="nav-number">1.</span> <span class="nav-text">滑动的产生</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#系统坐标系"><span class="nav-number">2.</span> <span class="nav-text">系统坐标系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#视图坐标系"><span class="nav-number">3.</span> <span class="nav-text">视图坐标系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#触摸事件与坐标系"><span class="nav-number">4.</span> <span class="nav-text">触摸事件与坐标系</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -923,6 +780,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
 
   
 

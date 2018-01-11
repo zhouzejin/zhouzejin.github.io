@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="绘图处理," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Zhou Zejin's Home" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="图像特效按照处理对象一般可以分为颜色特效和图形特效两类，下面分别进行介绍。 颜色特效在Android系统中，通常使用Bitmap（位图）的数据结构来表示一张图片，它包含了图片的所有数据。Bitmap由点阵和颜色值组成，点阵是图片像素的矩阵，其中每个元素对应图片的一个像素；颜色值（ARGB）分别对应透明度、红、绿、蓝四个">
+<meta name="keywords" content="绘图处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="图像特效">
+<meta property="og:url" content="http://yoursite.com/2018/01/02/图像特效/index.html">
+<meta property="og:site_name" content="Zhou Zejin&#39;s Home">
+<meta property="og:description" content="图像特效按照处理对象一般可以分为颜色特效和图形特效两类，下面分别进行介绍。 颜色特效在Android系统中，通常使用Bitmap（位图）的数据结构来表示一张图片，它包含了图片的所有数据。Bitmap由点阵和颜色值组成，点阵是图片像素的矩阵，其中每个元素对应图片的一个像素；颜色值（ARGB）分别对应透明度、红、绿、蓝四个分量，它们共同决定每个像素点的颜色。 进行颜色处理时，通常使用以下三个角度来描述">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/uploads/android/颜色矩阵处理过程.gif">
+<meta property="og:image" content="http://yoursite.com/uploads/android/颜色处理结果.gif">
+<meta property="og:image" content="http://yoursite.com/uploads/android/变形矩阵处理过程.gif">
+<meta property="og:image" content="http://yoursite.com/uploads/android/变形处理结果.gif">
+<meta property="og:image" content="http://yoursite.com/uploads/android/平移变换过程.gif">
+<meta property="og:image" content="http://yoursite.com/uploads/android/旋转变换过程.gif">
+<meta property="og:image" content="http://yoursite.com/uploads/android/缩放变换过程.gif">
+<meta property="og:image" content="http://yoursite.com/uploads/android/错切变换示意图.jpg">
+<meta property="og:image" content="http://yoursite.com/uploads/android/错切变换过程.gif">
+<meta property="og:updated_time" content="2018-01-11T11:03:55.505Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="图像特效">
+<meta name="twitter:description" content="图像特效按照处理对象一般可以分为颜色特效和图形特效两类，下面分别进行介绍。 颜色特效在Android系统中，通常使用Bitmap（位图）的数据结构来表示一张图片，它包含了图片的所有数据。Bitmap由点阵和颜色值组成，点阵是图片像素的矩阵，其中每个元素对应图片的一个像素；颜色值（ARGB）分别对应透明度、红、绿、蓝四个分量，它们共同决定每个像素点的颜色。 进行颜色处理时，通常使用以下三个角度来描述">
+<meta name="twitter:image" content="http://yoursite.com/uploads/android/颜色矩阵处理过程.gif">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/02/图像特效/"/>
+
+
+
+
+
+  <title>图像特效 | Zhou Zejin's Home</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Zhou Zejin's Home</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">想象力比知识更重要！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/02/图像特效/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhou Zejin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/Sanji.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhou Zejin's Home">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">图像特效</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-02T19:58:44+08:00">
+                2018-01-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>图像特效按照处理对象一般可以分为颜色特效和图形特效两类，下面分别进行介绍。</p>
+<h1 id="颜色特效"><a href="#颜色特效" class="headerlink" title="颜色特效"></a>颜色特效</h1><p>在Android系统中，通常使用Bitmap（位图）的数据结构来表示一张图片，它包含了图片的所有数据。Bitmap由点阵和颜色值组成，点阵是图片像素的矩阵，其中每个元素对应图片的一个像素；颜色值（ARGB）分别对应透明度、红、绿、蓝四个分量，它们共同决定每个像素点的颜色。</p>
+<p>进行颜色处理时，通常使用以下三个角度来描述一个图像：</p>
+<ul>
+<li>色调——物体的颜色</li>
+<li>饱和度——颜色的纯度，从0（灰）到100%（饱和）进行描述</li>
+<li>亮度——颜色的明暗程度</li>
+</ul>
+<h2 id="颜色矩阵——ColorMatrix"><a href="#颜色矩阵——ColorMatrix" class="headerlink" title="颜色矩阵——ColorMatrix"></a>颜色矩阵——ColorMatrix</h2><p>Android中使用颜色矩阵（ColorMatrix）处理图像的颜色效果，ColorMatrix是一个4x5的矩阵，对于图像的每个像素点，都有一个4x1的颜色分量矩阵保存颜色的RGBA值。</p>
+<p>具体对图像的颜色进行处理时，会通过一定的算法得到一个对应效果的ColorMatrix，接着把这个矩阵分别与每个像素点的颜色分量矩阵进行乘法运算得到新的颜色分量矩阵，最后为每个像素点设置新的颜色分量矩阵，从而达到颜色特效的处理效果，具体过程如下所示：</p>
+<p><img src="/uploads/android/颜色矩阵处理过程.gif" alt="颜色矩阵处理过程"></p>
+<p>根据上述过程，可以得到：</p>
+<p><img src="/uploads/android/颜色处理结果.gif" alt="颜色处理结果"></p>
+<p>根据处理结果可以知道，在4x5的ColorMatrix中：</p>
+<ul>
+<li>第一行r1 g1 b1 a1 o1的值决定新颜色值中的R（红色）</li>
+<li>第二行r2 g2 b2 a2 o2的值决定新颜色值中的G（绿色）</li>
+<li>第三行r3 g3 b3 a3 o3的值决定新颜色值中的B（蓝色）</li>
+<li>第四行r4 g4 b4 a4 o4的值决定新颜色值中的A（透明度）</li>
+<li>第五列o1 o2 o3 o4的值决定新颜色值中每个分量的偏移量（offset）</li>
+</ul>
+<p>因此，对图像的颜色进行处理时，通常有两种方法：一个是改变颜色的offset；另一个是改变对应RGBA值的系数。</p>
+<h2 id="通过颜色矩阵进行颜色处理"><a href="#通过颜色矩阵进行颜色处理" class="headerlink" title="通过颜色矩阵进行颜色处理"></a>通过颜色矩阵进行颜色处理</h2><p>改变ColorMatrix方式通常有两种：一种是通过系统API修改；另一种是利用经典算法直接创建。</p>
+<h3 id="通过系统API修改"><a href="#通过系统API修改" class="headerlink" title="通过系统API修改"></a>通过系统API修改</h3><p>通过系统API修改颜色矩阵可以改变图像的色调、饱和度和亮度。</p>
+<ul>
+<li><p>色调<br>使用setRotate(int axis, float degrees)方法设置颜色矩阵的色调。axis使用0，1，2来表示Red、Green、Blue三种颜色的处理；degrees表示处理的具体值。</p>
+</li>
+<li><p>饱和度<br>使用setSaturation(float sat)方法设置颜色矩阵的饱和度。当饱和度为0时，图像会变为灰色。</p>
+</li>
+<li><p>亮度<br>使用setScale(float rScale, float gScale, float bScale, float aScale)方法设置颜色矩阵的亮度。其本质是利用三原色以同比例混合会显示出白色的原理。当亮度为0时，图像会变为黑色。</p>
+</li>
+</ul>
+<ul>
+<li>效果叠加<br>除了上面三种处理方法外，还可以使用postConcat()方法将不同效果的矩阵进行混合，从而产生叠加效果。</li>
+</ul>
+<p>下面的示例代码展示了如何使用上面介绍的方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Bitmap <span class="title">handleImageEffect</span><span class="params">(Bitmap bm, <span class="keyword">float</span> hue, </span></span></span><br><span class="line"><span class="function"><span class="params">                                       <span class="keyword">float</span> saturation, <span class="keyword">float</span> lum)</span> </span>&#123;</span><br><span class="line">    Bitmap bitmap = Bitmap.createBitmap(bm.getWidth(), bm.getHeight(),</span><br><span class="line">            Bitmap.Config.ARGB_8888);</span><br><span class="line">    Canvas canvas = <span class="keyword">new</span> Canvas(bitmap);</span><br><span class="line">    Paint paint = <span class="keyword">new</span> Paint();</span><br><span class="line"></span><br><span class="line">    ColorMatrix hueMatrix = <span class="keyword">new</span> ColorMatrix();</span><br><span class="line">    hueMatrix.setRotate(<span class="number">0</span>, hue);</span><br><span class="line">    hueMatrix.setRotate(<span class="number">1</span>, hue);</span><br><span class="line">    hueMatrix.setRotate(<span class="number">2</span>, hue);</span><br><span class="line"></span><br><span class="line">    ColorMatrix saturationMatrix = <span class="keyword">new</span> ColorMatrix();</span><br><span class="line">    saturationMatrix.setSaturation(saturation);</span><br><span class="line"></span><br><span class="line">    ColorMatrix lumMatrix = <span class="keyword">new</span> ColorMatrix();</span><br><span class="line">    lumMatrix.setScale(lum, lum, lum, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    ColorMatrix imageMatrix = <span class="keyword">new</span> ColorMatrix();</span><br><span class="line">    imageMatrix.postConcat(hueMatrix);</span><br><span class="line">    imageMatrix.postConcat(saturationMatrix);</span><br><span class="line">    imageMatrix.postConcat(lumMatrix);</span><br><span class="line"></span><br><span class="line">    paint.setColorFilter(<span class="keyword">new</span> ColorMatrixColorFilter(imageMatrix));</span><br><span class="line">    canvas.drawBitmap(bm, <span class="number">0</span>, <span class="number">0</span>, paint);</span><br><span class="line">    <span class="keyword">return</span> bitmap;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="利用经典算法创建"><a href="#利用经典算法创建" class="headerlink" title="利用经典算法创建"></a>利用经典算法创建</h3><p>图像色彩处理，通常就是研究如何通过某种算法创建颜色矩阵，将其作用到图像上，形成新的色彩风格的图像。下面介绍一些经典算法对应的颜色矩阵。</p>
+<ul>
+<li>灰度效果</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 灰度效果</span></span><br><span class="line"><span class="keyword">float</span>[] colorMatrix = <span class="keyword">new</span> <span class="keyword">float</span>[] &#123;</span><br><span class="line">        <span class="number">0.33f</span>,  <span class="number">0.59f</span>,  <span class="number">0.11f</span>,  <span class="number">0</span>,  <span class="number">0</span>,</span><br><span class="line">        <span class="number">0.33f</span>,  <span class="number">0.59f</span>,  <span class="number">0.11f</span>,  <span class="number">0</span>,  <span class="number">0</span>,</span><br><span class="line">        <span class="number">0.33f</span>,  <span class="number">0.59f</span>,  <span class="number">0.11f</span>,  <span class="number">0</span>,  <span class="number">0</span>,</span><br><span class="line">        <span class="number">0</span>,      <span class="number">0</span>,      <span class="number">0</span>,      <span class="number">1</span>,  <span class="number">0</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>图像反转</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 图像反转</span></span><br><span class="line"><span class="keyword">float</span>[] colorMatrix = <span class="keyword">new</span> <span class="keyword">float</span>[] &#123;</span><br><span class="line">        -<span class="number">1</span>, <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">1</span>,  <span class="number">1</span>,</span><br><span class="line">        <span class="number">0</span>,  -<span class="number">1</span>, <span class="number">0</span>,  <span class="number">1</span>,  <span class="number">1</span>,</span><br><span class="line">        <span class="number">0</span>,  <span class="number">0</span>,  -<span class="number">1</span>, <span class="number">1</span>,  <span class="number">1</span>,</span><br><span class="line">        <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">0</span>,  <span class="number">1</span>,  <span class="number">0</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>怀旧效果</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 怀旧效果</span></span><br><span class="line"><span class="keyword">float</span>[] colorMatrix = <span class="keyword">new</span> <span class="keyword">float</span>[] &#123;</span><br><span class="line">        <span class="number">0.393f</span>, <span class="number">0.769f</span>, <span class="number">0.189f</span>, <span class="number">0</span>,  <span class="number">0</span>,</span><br><span class="line">        <span class="number">0.349f</span>, <span class="number">0.686f</span>, <span class="number">0.168f</span>, <span class="number">0</span>,  <span class="number">0</span>,</span><br><span class="line">        <span class="number">0.272f</span>, <span class="number">0.534f</span>, <span class="number">0.131f</span>, <span class="number">0</span>,  <span class="number">0</span>,</span><br><span class="line">        <span class="number">0</span>,      <span class="number">0</span>,      <span class="number">0</span>,      <span class="number">1</span>,  <span class="number">0</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>去色效果</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 去色效果</span></span><br><span class="line"><span class="keyword">float</span>[] colorMatrix = <span class="keyword">new</span> <span class="keyword">float</span>[] &#123;</span><br><span class="line">        <span class="number">1.5f</span>,   <span class="number">1.5f</span>,   <span class="number">1.5f</span>,   <span class="number">0</span>,  -<span class="number">1</span>,</span><br><span class="line">        <span class="number">1.5f</span>,   <span class="number">1.5f</span>,   <span class="number">1.5f</span>,   <span class="number">0</span>,  -<span class="number">1</span>,</span><br><span class="line">        <span class="number">1.5f</span>,   <span class="number">1.5f</span>,   <span class="number">1.5f</span>,   <span class="number">0</span>,  -<span class="number">1</span>,</span><br><span class="line">        <span class="number">0</span>,      <span class="number">0</span>,      <span class="number">0</span>,      <span class="number">1</span>,   <span class="number">0</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>高饱和度</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 高饱和度</span></span><br><span class="line"><span class="keyword">float</span>[] colorMatrix = <span class="keyword">new</span> <span class="keyword">float</span>[] &#123;</span><br><span class="line">        <span class="number">1.438f</span>,     -<span class="number">0.122f</span>,    -<span class="number">0.016f</span>,    <span class="number">0</span>,  -<span class="number">0.03f</span>,</span><br><span class="line">        -<span class="number">0.062f</span>,    <span class="number">1.378f</span>,     -<span class="number">0.016f</span>,    <span class="number">0</span>,  <span class="number">0.05f</span>,</span><br><span class="line">        -<span class="number">0.062f</span>,    -<span class="number">0.122f</span>,    <span class="number">1.483f</span>,     <span class="number">0</span>,  -<span class="number">0.02f</span>,</span><br><span class="line">        <span class="number">0</span>,          <span class="number">0</span>,          <span class="number">0</span>,          <span class="number">1</span>,  <span class="number">0</span>,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="像素点分析"><a href="#像素点分析" class="headerlink" title="像素点分析"></a>像素点分析</h2><p>除了通过ColorMatrix改变图像的颜色，还可以直接改变每个像素点的ARGB值来改变图像的颜色，这种处理方式相对更加精确。用这种方式处理图片时，需要注意原始图片是不可变的（mutable），需要复制原始图片进行处理。</p>
+<p>Android中使用Bitmap.getPixels(int[] pixels, int offset, int stride,int x, int y, int width, int height)方法获取图片的像素点的颜色值：</p>
+<ul>
+<li>pixels: 接收位图像素点颜色值的数组</li>
+<li>offset: 写入到pixels[]中的第一个像素索引值</li>
+<li>stride: pixels[]的行间距</li>
+<li>x: 从bitmap中读取的第一个像素的x坐标值</li>
+<li>y: 从bitmap中读取的第一个像素的y坐标值</li>
+<li>width: 每行的像素个数</li>
+<li>height: 读取的行数</li>
+</ul>
+<p>修改图像像素点的颜色值的关键代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 获取图片像素点的颜色值数组</span></span><br><span class="line">bitmap.getPixels(oldPx, <span class="number">0</span>, bitmap.getWidth(),</span><br><span class="line">        <span class="number">0</span>, <span class="number">0</span>, bitmap.getWidth(), bitmap.getHeight());</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取每个像素点具体的ARGB值</span></span><br><span class="line"><span class="keyword">int</span> color = oldPx[i];</span><br><span class="line">a = Color.alpha(color);</span><br><span class="line">r = Color.red(color);</span><br><span class="line">g = Color.green(color);</span><br><span class="line">b = Color.blue(color);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 根据图像处理算法修改像素点的ARGB值</span></span><br><span class="line">rn = (<span class="keyword">int</span>) (<span class="number">0.393</span> * r + <span class="number">0.322</span> * g + <span class="number">0.189</span> * b);</span><br><span class="line">gn = (<span class="keyword">int</span>) (<span class="number">0.393</span> * r + <span class="number">0.322</span> * g + <span class="number">0.189</span> * b);</span><br><span class="line">bn = (<span class="keyword">int</span>) (<span class="number">0.393</span> * r + <span class="number">0.322</span> * g + <span class="number">0.189</span> * b);</span><br><span class="line">newPx[i] = Color.argb(a, rn, gn, bn);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 将修改后的颜色数组设置到位图上，完成颜色处理</span></span><br><span class="line">bitmap.setPixels(newPx, <span class="number">0</span>, bitmap.getWidth(),</span><br><span class="line">        <span class="number">0</span>, <span class="number">0</span>, bitmap.getWidth(), bitmap.getHeight());</span><br></pre></td></tr></table></figure>
+<h2 id="通过像素点进行颜色处理"><a href="#通过像素点进行颜色处理" class="headerlink" title="通过像素点进行颜色处理"></a>通过像素点进行颜色处理</h2><p>通过Pixels进行颜色处理，就是通过特定的算法改变每个像素点的颜色值，从而得到相应的处理效果。下面介绍一些常用的处理算法。</p>
+<ul>
+<li>底片效果</li>
+</ul>
+<p>处理算法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">r = <span class="number">255</span> - r;</span><br><span class="line">g = <span class="number">255</span> - g;</span><br><span class="line">b = <span class="number">255</span> - b;</span><br></pre></td></tr></table></figure>
+<p>示例代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Bitmap <span class="title">handleImagePixels</span><span class="params">(Bitmap bitmap)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> width = bitmap.getWidth();</span><br><span class="line">    <span class="keyword">int</span> height = bitmap.getHeight();</span><br><span class="line">    <span class="keyword">int</span> color;</span><br><span class="line">    <span class="keyword">int</span> a, r, g, b;</span><br><span class="line"></span><br><span class="line">    Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);</span><br><span class="line">    <span class="keyword">int</span>[] oldPx = <span class="keyword">new</span> <span class="keyword">int</span>[width * height];</span><br><span class="line">    <span class="keyword">int</span>[] newPx = <span class="keyword">new</span> <span class="keyword">int</span>[width * height];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 获取图片像素点的颜色值数组</span></span><br><span class="line">    bitmap.getPixels(oldPx, <span class="number">0</span>, width, <span class="number">0</span>, <span class="number">0</span>, width, height);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; width * height; i++) &#123;</span><br><span class="line">        <span class="comment">// 获取每个像素点具体的ARGB值</span></span><br><span class="line">        color = oldPx[i];</span><br><span class="line">        a = Color.alpha(color);</span><br><span class="line">        r = Color.red(color);</span><br><span class="line">        g = Color.green(color);</span><br><span class="line">        b = Color.blue(color);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 根据图像处理算法修改像素点的ARGB值</span></span><br><span class="line">        r = <span class="number">255</span> - r;</span><br><span class="line">        g = <span class="number">255</span> - g;</span><br><span class="line">        b = <span class="number">255</span> - b;</span><br><span class="line">        <span class="keyword">if</span> (r &gt; <span class="number">255</span>) r = <span class="number">255</span>;</span><br><span class="line">        <span class="keyword">if</span> (r &lt; <span class="number">0</span>) r = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (g &gt; <span class="number">255</span>) g = <span class="number">255</span>;</span><br><span class="line">        <span class="keyword">if</span> (g &lt; <span class="number">0</span>) g = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">if</span> (b &gt; <span class="number">255</span>) b = <span class="number">255</span>;</span><br><span class="line">        <span class="keyword">if</span> (b &lt; <span class="number">0</span>) b = <span class="number">0</span>;</span><br><span class="line">        newPx[i] = Color.argb(a, r, g, b);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 将修改后的颜色数组设置到位图上，完成颜色处理</span></span><br><span class="line">    bmp.setPixels(newPx, <span class="number">0</span>, width, <span class="number">0</span>, <span class="number">0</span>, width, height);</span><br><span class="line">    <span class="keyword">return</span> bmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>老照片效果</li>
+</ul>
+<p>处理算法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">rn = (<span class="keyword">int</span>) (<span class="number">0.393</span> * r + <span class="number">0.769</span> * g + <span class="number">0.189</span> * b);</span><br><span class="line">gn = (<span class="keyword">int</span>) (<span class="number">0.349</span> * r + <span class="number">0.686</span> * g + <span class="number">0.168</span> * b);</span><br><span class="line">bn = (<span class="keyword">int</span>) (<span class="number">0.272</span> * r + <span class="number">0.534</span> * g + <span class="number">0.131</span> * b);</span><br></pre></td></tr></table></figure>
+<p>示例代码和上面类似。</p>
+<h1 id="图形特效"><a href="#图形特效" class="headerlink" title="图形特效"></a>图形特效</h1><p>可以将一张图像的形状进行处理，达到某种图形上的效果。Android中提供的常用处理方式有：平移、旋转、缩放和错切（skew），除了常用的处理方式，还可以通过变形矩阵自定义图形变换。</p>
+<h2 id="变形矩阵——Matrix"><a href="#变形矩阵——Matrix" class="headerlink" title="变形矩阵——Matrix"></a>变形矩阵——Matrix</h2><p>类似于颜色矩阵，Android中使用变形矩阵（Matrix）处理图像的图形变换，变形矩阵是一个3x3的矩阵，对于图像的每个像素点，都有一个3x1的位置矩阵保存其X，Y的坐标值。</p>
+<p>具体进行图形变换时，会将变形矩阵与每个像素的位置矩阵相乘，为每个像素设置新的位置，从而达到图像变换效果，具体过程如下所示：</p>
+<p><img src="/uploads/android/变形矩阵处理过程.gif" alt="变形矩阵处理过程"></p>
+<p>根据上述过程，可以得到：</p>
+<p><img src="/uploads/android/变形处理结果.gif" alt="变形处理结果"></p>
+<p>通常情况下为了保证 1 = gX + hY + i 成立，会令 g = h = 0，i = 1，这样，在处理图形变换时，只需要关注其它几个参数即可。</p>
+<ul>
+<li>平移变换（Translate）</li>
+</ul>
+<p>平移变换就是将所有像素点的坐标值进行平移，其变换过程如下：</p>
+<p><img src="/uploads/android/平移变换过程.gif" alt="平移变换过程"></p>
+<ul>
+<li>旋转变换（Rotate）</li>
+</ul>
+<p>旋转变换是将像素点围绕一个中心点进行选择，以原点为中心旋转一定角度的变换过程如下：</p>
+<p><img src="/uploads/android/旋转变换过程.gif" alt="旋转变换过程"></p>
+<p>述变换过程是以坐标原点为中心旋转的，如果以任意点O为中心旋转通常需要：将坐标原点平移到O点；以原点为中心旋转；将坐标原点还原。</p>
+<ul>
+<li>缩放变换（Scale）</li>
+</ul>
+<p>缩放变换是对于多个像素点才会有效果，将图像沿X轴和Y轴按一定比例缩放的变换过程如下：</p>
+<p><img src="/uploads/android/缩放变换过程.gif" alt="缩放变换过程"></p>
+<ul>
+<li>错切变换（Skew）</li>
+</ul>
+<p>错切变换是将所有像素点的X坐标（或Y坐标）保持不变，而对应的Y坐标（或X坐标）按比例发生平移，并且平移的大小和该点到X轴（或Y轴）的垂直距离成正比。</p>
+<p>错切变换的示意图如下所示：</p>
+<p><img src="/uploads/android/错切变换示意图.jpg" alt="错切变换示意图"></p>
+<p>错切变换过程如下：</p>
+<p><img src="/uploads/android/错切变换过程.gif" alt="错切变换过程"></p>
+<h2 id="通过变形矩阵进行图形处理"><a href="#通过变形矩阵进行图形处理" class="headerlink" title="通过变形矩阵进行图形处理"></a>通过变形矩阵进行图形处理</h2><p>与颜色矩阵一样，变形矩阵也提供了相关API简化图形变换，其中Matrix提供的方法是进行2D变换的，而Camera提供的方法还可以进行3D变换。</p>
+<h3 id="通过Matrix进行2D变换"><a href="#通过Matrix进行2D变换" class="headerlink" title="通过Matrix进行2D变换"></a>通过Matrix进行2D变换</h3><p>Matrix提供的变换API有：</p>
+<ul>
+<li>Matrix.setTranslate()：平移变换</li>
+<li>Matrix.setRotate()：旋转变换</li>
+<li>Matrix.setScale()：缩放变换</li>
+<li>Matrix.setSkew()：错切变换</li>
+<li>Matrix.setPolyToPoly() setRectToRect() setSinCos()：自定义变换</li>
+<li>Matrix.preXXX()和Matrix.postXXX()：叠加变换</li>
+</ul>
+<p>当设置完Matrix后，把Matrix设置到Canvas上有两个方法：</p>
+<ul>
+<li>Canvas.setMatrix(matrix)：用Matrix直接替换Canvas当前的变换矩阵，即抛弃Canvas当前的变换，改用Matrix的变换</li>
+<li>Canvas.concat(matrix)：用Canvas当前的变换矩阵和Matrix相乘，即基于Canvas当前的变换，叠加上Matrix中的变换</li>
+</ul>
+<h3 id="通过Camera进行3D变换"><a href="#通过Camera进行3D变换" class="headerlink" title="通过Camera进行3D变换"></a>通过Camera进行3D变换</h3><p>Camera提供的3D变换有三类：</p>
+<ul>
+<li>Camera.rotateXXX()：将虚拟相机的坐标轴沿X、Y、Z轴三个方向进行旋转，可以用来实现翻转效果。同时要注意，虚拟相机旋转的轴心是坐标原点。</li>
+<li>Camera.translate(x, y, z)：将虚拟相机的坐标轴沿X、Y、Z轴三个方向进行移动，可以使用Canvas的translate()和scale()方法代替。</li>
+<li>Camera.setLocation(x, y, z)：设置虚拟相机的位置，可以用来控制投影的图像大小。</li>
+</ul>
+<p>当设置完Camera后，把Camera的Matrix设置到Canvas需要使用Camera.applyToCanvas(canvas)方法。</p>
+<p>示例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">canvas.translate(centerX, centerY); <span class="comment">// 旋转之前把绘制内容移动到轴心（原点）</span></span><br><span class="line"></span><br><span class="line">camera.save(); <span class="comment">// 保存 Camera 的状态</span></span><br><span class="line">camera.rotateX(<span class="number">30</span>); <span class="comment">// 旋转 Camera 的三维空间</span></span><br><span class="line">camera.applyToCanvas(canvas); <span class="comment">// 把旋转投影到 Canvas</span></span><br><span class="line">camera.restore(); <span class="comment">// 恢复 Camera 的状态</span></span><br><span class="line"></span><br><span class="line">canvas.translate(-centerX, -centerY); <span class="comment">// 旋转之后把投绘制内容动回来</span></span><br></pre></td></tr></table></figure>
+<h2 id="像素块分析"><a href="#像素块分析" class="headerlink" title="像素块分析"></a>像素块分析</h2><p>类似于颜色处理，除了使用矩阵的方式，还可以使用基于像素的方式进行图形处理。具体处理的时候需要使用drawBitmapMesh()方法，该方法像一张网格，把图像分成一个个像素块，通过改变像素块间节点的坐标位置，使整个图像的图形发生变化。</p>
+<p>该方法具体形式如下：<br>drawBitmapMesh(Bitmap bitmap, int meshWidth, int meshHeight, float[] verts, int vertOffset, int[] colors, int colorOffset, Paint paint)</p>
+<p>其中关键参数有：</p>
+<ul>
+<li>bitmap：需要形变的图像</li>
+<li>meshWidth：横向网格数目</li>
+<li>meshHeight：纵向网格数目</li>
+<li>verts：网格交叉点坐标数组</li>
+<li>vertOffset：绘制的时候，verts数组跳过坐标对数目</li>
+</ul>
+<p>其中最重要的参数是verts数组，drawBitmapMesh()方法绘制前会将图像分成多个像素块，假如在图像上的横向和纵向各画N（N &gt; 1，线条从图像边缘开始）条线，这些线会交叉组成NxN个的点，那么，每个点的坐标值以 x1, y1, x2, y2, … , xn, yn 的形式保存在verts数组中，drawBitmapMesh()方法就是通过改变这些坐标值，重新定位每个像素块，从而改变图像形状。</p>
+<p>drawBitmapMesh()方法基本上可以实现所有的图像特效，其使用关键在于计算去，确定新的交叉点坐标。</p>
+<h2 id="通过像素块进行图形处理"><a href="#通过像素块进行图形处理" class="headerlink" title="通过像素块进行图形处理"></a>通过像素块进行图形处理</h2><p>这里使用drawBitmapMesh()方法使一张图片产生“旗帜飞扬”的效果。</p>
+<p>要达到这个效果，需要保持交叉点的横坐标不变，并且交叉点纵坐标呈现一个三角函数的周期变化。</p>
+<ul>
+<li>获取交叉点坐标</li>
+</ul>
+<p>基本原理是通过遍历所有的交叉线，按比例获取交叉点坐标。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 网线数目 = 网格数目 + 1</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> HEIGHT = <span class="number">19</span>; <span class="comment">// 纵向网格数目</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> WIDTH = <span class="number">29</span>; <span class="comment">// 横向网格数目</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 获取原始交叉点坐标</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">float</span>[] getBitmapVerts(Bitmap bitmap) &#123;</span><br><span class="line">    <span class="keyword">float</span>[] verts = <span class="keyword">new</span> <span class="keyword">float</span>[(WIDTH + <span class="number">1</span>) * (HEIGHT + <span class="number">1</span>) * <span class="number">2</span>]; <span class="comment">// 坐标值数目 = 2 * 交点数目</span></span><br><span class="line">    <span class="keyword">float</span> bitmapHeight = bitmap.getHeight();</span><br><span class="line">    <span class="keyword">float</span> bitmapWidth = bitmap.getWidth();</span><br><span class="line">    <span class="keyword">int</span> index = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt;= HEIGHT; y++) &#123;</span><br><span class="line">        <span class="keyword">float</span> fy = bitmapHeight * y / HEIGHT;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt;= WIDTH; x++) &#123;</span><br><span class="line">            <span class="keyword">float</span> fx = bitmapWidth * x / WIDTH;</span><br><span class="line">            verts[index * <span class="number">2</span>] = fx;</span><br><span class="line">            verts[index * <span class="number">2</span> + <span class="number">1</span>] = fy + <span class="number">100</span>; <span class="comment">// 为了避免图像偏移后被遮挡，将纵坐标+100，使图像下移</span></span><br><span class="line">            index++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> verts;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>改变交叉点坐标值</li>
+</ul>
+<p>横坐标不变，使用正弦函数改变纵坐标值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 根据正选函数修改交叉点坐标</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> verts 交叉点坐标</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> K 相位，用于动态改变偏移量，实现动态效果</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> A 振幅，用于改变偏移幅度</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">flagWave</span><span class="params">(<span class="keyword">float</span>[] verts, <span class="keyword">float</span> K, <span class="keyword">float</span> A)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= HEIGHT; j++) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= WIDTH; i++) &#123;</span><br><span class="line">            <span class="keyword">float</span> offsetY = (<span class="keyword">float</span>) Math.sin(((<span class="keyword">float</span>) i / WIDTH + K) * <span class="number">2</span> * Math.PI);</span><br><span class="line">            <span class="keyword">int</span> index = <span class="number">2</span> * (j * (WIDTH + <span class="number">1</span>) + i);</span><br><span class="line">            verts[index] += <span class="number">0</span>;</span><br><span class="line">            verts[index + <span class="number">1</span>] += offsetY * A;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>根据交叉点绘制图像</li>
+</ul>
+<p>这样绘制可以得到一个静态的效果。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">float</span> mVerts[] = getBitmapVerts(mBitmap);</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">float</span> K = <span class="number">0f</span>, A = <span class="number">50f</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onDraw(canvas);</span><br><span class="line"></span><br><span class="line">    flagWave(mVerts, K, A);</span><br><span class="line">    canvas.drawBitmapMesh(mBitmap, WIDTH, HEIGHT, mVerts, <span class="number">0</span>, <span class="keyword">null</span>, <span class="number">0</span>, <span class="keyword">null</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>重绘产生动态效果</li>
+</ul>
+<p>每次重绘时，通过改变正弦函数的相位来改变纵坐标的偏移量。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onDraw</span><span class="params">(Canvas canvas)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">super</span>.onDraw(canvas);</span><br><span class="line"></span><br><span class="line">    flagWave(mVerts, K, A);</span><br><span class="line">    canvas.drawBitmapMesh(mBitmap, WIDTH, HEIGHT, mVerts, <span class="number">0</span>, <span class="keyword">null</span>, <span class="number">0</span>, <span class="keyword">null</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 改变相位后重绘，产生飘扬效果</span></span><br><span class="line">    K += <span class="number">0.1f</span>;</span><br><span class="line">    postInvalidateDelayed(<span class="number">50</span>); <span class="comment">// 延时重绘，避免飘扬太快</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/wechatpay.jpg" alt="Zhou Zejin 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/alipay.jpg" alt="Zhou Zejin 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/绘图处理/" rel="tag"># 绘图处理</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/02/XML绘图/" rel="next" title="XML绘图">
+                <i class="fa fa-chevron-left"></i> XML绘图
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/11/Paint使用/" rel="prev" title="Paint使用">
+                Paint使用 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/Sanji.jpg"
+                alt="Zhou Zejin" />
+            
+              <p class="site-author-name" itemprop="name">Zhou Zejin</p>
+              <p class="site-description motion-element" itemprop="description">Sunny的个人Blog，主要记录Android学习总结，欢迎交流~</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/zhouzejin" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#颜色特效"><span class="nav-number">1.</span> <span class="nav-text">颜色特效</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#颜色矩阵——ColorMatrix"><span class="nav-number">1.1.</span> <span class="nav-text">颜色矩阵——ColorMatrix</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过颜色矩阵进行颜色处理"><span class="nav-number">1.2.</span> <span class="nav-text">通过颜色矩阵进行颜色处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通过系统API修改"><span class="nav-number">1.2.1.</span> <span class="nav-text">通过系统API修改</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#利用经典算法创建"><span class="nav-number">1.2.2.</span> <span class="nav-text">利用经典算法创建</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#像素点分析"><span class="nav-number">1.3.</span> <span class="nav-text">像素点分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过像素点进行颜色处理"><span class="nav-number">1.4.</span> <span class="nav-text">通过像素点进行颜色处理</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#图形特效"><span class="nav-number">2.</span> <span class="nav-text">图形特效</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#变形矩阵——Matrix"><span class="nav-number">2.1.</span> <span class="nav-text">变形矩阵——Matrix</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过变形矩阵进行图形处理"><span class="nav-number">2.2.</span> <span class="nav-text">通过变形矩阵进行图形处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通过Matrix进行2D变换"><span class="nav-number">2.2.1.</span> <span class="nav-text">通过Matrix进行2D变换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过Camera进行3D变换"><span class="nav-number">2.2.2.</span> <span class="nav-text">通过Camera进行3D变换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#像素块分析"><span class="nav-number">2.3.</span> <span class="nav-text">像素块分析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过像素块进行图形处理"><span class="nav-number">2.4.</span> <span class="nav-text">通过像素块进行图形处理</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhou Zejin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

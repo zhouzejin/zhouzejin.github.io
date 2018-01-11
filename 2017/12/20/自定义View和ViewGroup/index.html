@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="自定义控件," />
 
 
 
@@ -81,16 +81,18 @@
 
 
 
-<meta name="description" content="Sunny的个人Blog，主要记录Android学习总结，欢迎交流~">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Zhou Zejin&#39;s Home">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+<meta name="description" content="自定义View在自定义View时，通常需要重写onDraw()方法绘制View的显示内容；如果需要使用wrap_content属性，还需要重写onMeasure()方法进行测量；另外，还可以在attrs.xml文件中为View自定义属性。 在View中通常用到的回调方法有：  onFinishInflate()从XML">
+<meta name="keywords" content="自定义控件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义View和ViewGroup">
+<meta property="og:url" content="http://yoursite.com/2017/12/20/自定义View和ViewGroup/index.html">
 <meta property="og:site_name" content="Zhou Zejin&#39;s Home">
-<meta property="og:description" content="Sunny的个人Blog，主要记录Android学习总结，欢迎交流~">
+<meta property="og:description" content="自定义View在自定义View时，通常需要重写onDraw()方法绘制View的显示内容；如果需要使用wrap_content属性，还需要重写onMeasure()方法进行测量；另外，还可以在attrs.xml文件中为View自定义属性。 在View中通常用到的回调方法有：  onFinishInflate()从XML文件中加载控件后调用；  onSizeChanged()控件大小改变时调用；">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-12-20T11:25:04.264Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Zhou Zejin&#39;s Home">
-<meta name="twitter:description" content="Sunny的个人Blog，主要记录Android学习总结，欢迎交流~">
+<meta name="twitter:title" content="自定义View和ViewGroup">
+<meta name="twitter:description" content="自定义View在自定义View时，通常需要重写onDraw()方法绘制View的显示内容；如果需要使用wrap_content属性，还需要重写onMeasure()方法进行测量；另外，还可以在attrs.xml文件中为View自定义属性。 在View中通常用到的回调方法有：  onFinishInflate()从XML文件中加载控件后调用；  onSizeChanged()控件大小改变时调用；">
 
 
 
@@ -120,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/archives/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/12/20/自定义View和ViewGroup/"/>
 
 
 
 
 
-  <title>归档 | Zhou Zejin's Home</title>
+  <title>自定义View和ViewGroup | Zhou Zejin's Home</title>
   
 
 
@@ -145,7 +147,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -283,416 +285,253 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/20/自定义View和ViewGroup/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhou Zejin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/Sanji.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhou Zejin's Home">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">自定义View和ViewGroup</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-20T19:05:31+08:00">
+                2017-12-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-        嗯..! 目前共计 12 篇日志。 继续努力。
-      </span>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
 
-      
-
-        
-        
-        
-
-        
+                
+                
+              
+            </span>
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
 
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/11/Paint使用/" itemprop="url">
-              
-                <span itemprop="name">Paint使用</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-11T19:09:35+08:00"
-              content="2018-01-11" >
-          01-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/02/图像特效/" itemprop="url">
-              
-                <span itemprop="name">图像特效</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-02T19:58:44+08:00"
-              content="2018-01-02" >
-          01-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/02/XML绘图/" itemprop="url">
-              
-                <span itemprop="name">XML绘图</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-02T10:03:01+08:00"
-              content="2018-01-02" >
-          01-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/02/2D绘图/" itemprop="url">
-              
-                <span itemprop="name">2D绘图</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-02T09:42:10+08:00"
-              content="2018-01-02" >
-          01-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2017">2017</h1>
-          </div>
-        
-        
+            
+          
 
-        
+          
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/29/屏幕信息/" itemprop="url">
-              
-                <span itemprop="name">屏幕信息</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-29T09:43:49+08:00"
-              content="2017-12-29" >
-          12-29
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+        </div>
+      </header>
+    
 
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/27/实现滑动的方法/" itemprop="url">
-              
-                <span itemprop="name">实现滑动的方法</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-27T18:26:58+08:00"
-              content="2017-12-27" >
-          12-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/26/滑动实现原理/" itemprop="url">
-              
-                <span itemprop="name">滑动实现原理</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-26T19:40:57+08:00"
-              content="2017-12-26" >
-          12-26
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <h1 id="自定义View"><a href="#自定义View" class="headerlink" title="自定义View"></a>自定义View</h1><p>在自定义View时，通常需要重写onDraw()方法绘制View的显示内容；如果需要使用wrap_content属性，还需要重写onMeasure()方法进行测量；另外，还可以在attrs.xml文件中为View自定义属性。</p>
+<p>在View中通常用到的回调方法有：</p>
+<ul>
+<li><p>onFinishInflate()<br>从XML文件中加载控件后调用；</p>
+</li>
+<li><p>onSizeChanged()<br>控件大小改变时调用；</p>
+</li>
+<li><p>onMeasure()<br>测量控件大小时调用</p>
+</li>
+<li><p>onLayout()<br>确定控件显示位置时调用</p>
+</li>
+<li><p>onDraw()<br>绘制控件时调用；</p>
+</li>
+<li><p>onTouchEvent()<br>监听触摸事件时调用；</p>
+</li>
+</ul>
+<p>在自定义View的时候，只需要重写特点条件的回调方法。</p>
+<p>通常情况下，自定义View有三种方式：对现有View进行扩展、创建复合View、自定义新的View。</p>
+<h2 id="对现有View进行扩展"><a href="#对现有View进行扩展" class="headerlink" title="对现有View进行扩展"></a>对现有View进行扩展</h2><p>这种方式是在原生View的基础上进行扩展，比如修改显示的效果、增加新的功能等。</p>
+<p>通常可以在onDraw()方法中，对原生View进行扩展。</p>
+<h2 id="创建复合View"><a href="#创建复合View" class="headerlink" title="创建复合View"></a>创建复合View</h2><p>这种方式通常需要继承一个合适的ViewGroup，再给它添加指定功能的控件，从而组合成新的复合View。</p>
+<p>对于复合View，一般会给它指定一些自定义属性，让其具有更强的扩展性。</p>
+<h2 id="自定义新的View"><a href="#自定义新的View" class="headerlink" title="自定义新的View"></a>自定义新的View</h2><p>当原生View无法满足需求时，可以通过继承View，自定义一个新的View。</p>
+<p>自定义新的View，最重要的是绘制View和实现交互。绘制逻辑需要重写onDraw()和onMeasure()方法，交互逻辑需要重写onTouchEvent()等控制触控事件的方法。还可以像实现复合View那样，为新的View配置自定义属性，丰富自定义View的可定制性。</p>
+<h1 id="自定义ViewGroup"><a href="#自定义ViewGroup" class="headerlink" title="自定义ViewGroup"></a>自定义ViewGroup</h1><p>ViewGroup用于管理一组子View，将子View放到合适的位置，并为其添加响应事件。</p>
+<p>自定义ViewGroup通常需要重写onMeasure()方法对子View进行测量，重写onLayout()方法确定子View的位置，重写onTouchEvent()方法为子View设置响应事件。</p>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/21/事件拦截机制/" itemprop="url">
-              
-                <span itemprop="name">事件拦截机制</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-21T18:08:19+08:00"
-              content="2017-12-21" >
-          12-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/20/自定义View和ViewGroup/" itemprop="url">
-              
-                <span itemprop="name">自定义View和ViewGroup</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-20T19:05:31+08:00"
-              content="2017-12-20" >
-          12-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/20/控件的测量和绘制/" itemprop="url">
-              
-                <span itemprop="name">控件的测量和绘制</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-20T14:54:17+08:00"
-              content="2017-12-20" >
-          12-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/wechatpay.jpg" alt="Zhou Zejin 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/alipay.jpg" alt="Zhou Zejin 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/自定义控件/" rel="tag"># 自定义控件</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/20/控件的测量和绘制/" rel="next" title="控件的测量和绘制">
+                <i class="fa fa-chevron-left"></i> 控件的测量和绘制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/21/事件拦截机制/" rel="prev" title="事件拦截机制">
+                事件拦截机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
 
 
           </div>
@@ -700,6 +539,8 @@
 
 
           
+  
+
 
         </div>
         
@@ -722,8 +563,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -804,6 +654,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义View"><span class="nav-number">1.</span> <span class="nav-text">自定义View</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#对现有View进行扩展"><span class="nav-number">1.1.</span> <span class="nav-text">对现有View进行扩展</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建复合View"><span class="nav-number">1.2.</span> <span class="nav-text">创建复合View</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自定义新的View"><span class="nav-number">1.3.</span> <span class="nav-text">自定义新的View</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义ViewGroup"><span class="nav-number">2.</span> <span class="nav-text">自定义ViewGroup</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -923,6 +789,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
 
   
 

@@ -68,10 +68,12 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="绘图处理," />
 
 
 
+
+  
 
 
   <link rel="alternate" href="/atom.xml" title="Zhou Zejin's Home" type="application/atom+xml" />
@@ -81,16 +83,18 @@
 
 
 
-<meta name="description" content="Sunny的个人Blog，主要记录Android学习总结，欢迎交流~">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Zhou Zejin&#39;s Home">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+<meta name="description" content="在2D绘图中可以了解到Paint的基本使用，使用这些基本方法可以实现一般的绘制需求，如果要实现更加丰富的绘图效果，需要了解Paint的更详细使用。 Paint的方法按功能可以分为四类：颜色处理、绘制效果、文字绘制和初始化相关。 颜色处理颜色处理有三个层次：直接使用设置颜色的API给图形和文字设置颜色；使用setColo">
+<meta name="keywords" content="绘图处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Paint使用">
+<meta property="og:url" content="http://yoursite.com/2018/01/11/Paint使用/index.html">
 <meta property="og:site_name" content="Zhou Zejin&#39;s Home">
-<meta property="og:description" content="Sunny的个人Blog，主要记录Android学习总结，欢迎交流~">
+<meta property="og:description" content="在2D绘图中可以了解到Paint的基本使用，使用这些基本方法可以实现一般的绘制需求，如果要实现更加丰富的绘图效果，需要了解Paint的更详细使用。 Paint的方法按功能可以分为四类：颜色处理、绘制效果、文字绘制和初始化相关。 颜色处理颜色处理有三个层次：直接使用设置颜色的API给图形和文字设置颜色；使用setColorFilter()基于颜色进行过滤处理；使用setXfermode()处理源图像">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-01-11T11:47:09.322Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Zhou Zejin&#39;s Home">
-<meta name="twitter:description" content="Sunny的个人Blog，主要记录Android学习总结，欢迎交流~">
+<meta name="twitter:title" content="Paint使用">
+<meta name="twitter:description" content="在2D绘图中可以了解到Paint的基本使用，使用这些基本方法可以实现一般的绘制需求，如果要实现更加丰富的绘图效果，需要了解Paint的更详细使用。 Paint的方法按功能可以分为四类：颜色处理、绘制效果、文字绘制和初始化相关。 颜色处理颜色处理有三个层次：直接使用设置颜色的API给图形和文字设置颜色；使用setColorFilter()基于颜色进行过滤处理；使用setXfermode()处理源图像">
 
 
 
@@ -120,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/archives/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/01/11/Paint使用/"/>
 
 
 
 
 
-  <title>归档 | Zhou Zejin's Home</title>
+  <title>Paint使用 | Zhou Zejin's Home</title>
   
 
 
@@ -145,7 +149,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -283,416 +287,320 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/11/Paint使用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhou Zejin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/Sanji.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhou Zejin's Home">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">Paint使用</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T19:09:35+08:00">
+                2018-01-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-        嗯..! 目前共计 12 篇日志。 继续努力。
-      </span>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
 
-      
-
-        
-        
-        
-
-        
+                
+                
+              
+            </span>
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
 
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/11/Paint使用/" itemprop="url">
-              
-                <span itemprop="name">Paint使用</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-11T19:09:35+08:00"
-              content="2018-01-11" >
-          01-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/02/图像特效/" itemprop="url">
-              
-                <span itemprop="name">图像特效</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-02T19:58:44+08:00"
-              content="2018-01-02" >
-          01-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/02/XML绘图/" itemprop="url">
-              
-                <span itemprop="name">XML绘图</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-02T10:03:01+08:00"
-              content="2018-01-02" >
-          01-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/02/2D绘图/" itemprop="url">
-              
-                <span itemprop="name">2D绘图</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-02T09:42:10+08:00"
-              content="2018-01-02" >
-          01-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2017">2017</h1>
-          </div>
-        
-        
+            
+          
 
-        
+          
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/29/屏幕信息/" itemprop="url">
-              
-                <span itemprop="name">屏幕信息</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-29T09:43:49+08:00"
-              content="2017-12-29" >
-          12-29
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+        </div>
+      </header>
+    
 
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/27/实现滑动的方法/" itemprop="url">
-              
-                <span itemprop="name">实现滑动的方法</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-27T18:26:58+08:00"
-              content="2017-12-27" >
-          12-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/26/滑动实现原理/" itemprop="url">
-              
-                <span itemprop="name">滑动实现原理</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-26T19:40:57+08:00"
-              content="2017-12-26" >
-          12-26
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <p>在<a href="/2018/01/02/2D绘图/">2D绘图</a>中可以了解到Paint的基本使用，使用这些基本方法可以实现一般的绘制需求，如果要实现更加丰富的绘图效果，需要了解Paint的更详细使用。</p>
+<p>Paint的方法按功能可以分为四类：颜色处理、绘制效果、文字绘制和初始化相关。</p>
+<h1 id="颜色处理"><a href="#颜色处理" class="headerlink" title="颜色处理"></a>颜色处理</h1><p>颜色处理有三个层次：直接使用设置颜色的API给图形和文字设置颜色；使用setColorFilter()基于颜色进行过滤处理；使用setXfermode()处理源图像和Canvas已有内容的关系。</p>
+<h2 id="颜色设置"><a href="#颜色设置" class="headerlink" title="颜色设置"></a>颜色设置</h2><p>Paint设置颜色的方法有两种：一种是直接用Paint.setColor/ARGB()来设置颜色，另一种是使用Shader来指定着色方案。</p>
+<h3 id="直接设置颜色"><a href="#直接设置颜色" class="headerlink" title="直接设置颜色"></a>直接设置颜色</h3><ul>
+<li>setColor(int color)</li>
+<li>setARGB(int a, int r, int g, int b)</li>
+</ul>
+<h3 id="使用Shader"><a href="#使用Shader" class="headerlink" title="使用Shader"></a>使用Shader</h3><p>通过setShader(Shader shader)设置Shader后，Paint 在绘制图形和文字时就不使用setColor/ARGB()设置的颜色了，而是使用Shader中的颜色方案。系统提供的Shader有以下几类：</p>
+<ul>
+<li>LinearGradient 线性渐变</li>
+<li>RadialGradient 辐射渐变</li>
+<li>BitmapShader 用Bitmap的像素来作为图形或文字的填充</li>
+</ul>
+<p>上面三种Shader都有3种着色规则（TileMode）：CLAMP会在端点之外延续端点处的颜色；MIRROR是镜像模式；REPEAT是重复模式。</p>
+<ul>
+<li>SweepGradient 扫描渐变</li>
+<li>ComposeShader 混合着色器，把两个Shader叠加使用<br>叠加使用时，需要用到叠加模式，它的类型是PorterDuff.Mode，决定shaderA和shaderB应该怎样共同绘制。</li>
+</ul>
+<h2 id="设置滤色器"><a href="#设置滤色器" class="headerlink" title="设置滤色器"></a>设置滤色器</h2><p>通过setColorFilter(ColorFilter colorFilter)设置滤色器，系统提供的ColorFilter有以下几类：</p>
+<ul>
+<li><p>LightingColorFilter<br>模拟简单的光照效果。</p>
+</li>
+<li><p>PorterDuffColorFilter<br>使用一个指定的颜色和一种指定的PorterDuff.Mode来与绘制对象进行合成。</p>
+</li>
+<li><p>ColorMatrixColorFilter<br>使用一个ColorMatrix来对颜色进行处理，具体使用可以查看<a href="/2018/01/02/图像特效/">图像特效</a>中的颜色特效。</p>
+</li>
+</ul>
+<h2 id="设置TransferMode"><a href="#设置TransferMode" class="headerlink" title="设置TransferMode"></a>设置TransferMode</h2><p>通过setXfermode(Xfermode xfermode)设置TransferMode，”Xfermode”是”Transfer mode”的简写，指的是要绘制的内容和Canvas目标位置的内容进行颜色结合的模式，简单来说，就是以要绘制的内容作为源图像，以Canvas中已有的内容作为目标图像，选取一个PorterDuff.Mode作为绘制内容的颜色处理方案。</p>
+<p>创建Xfermode的时候其实是创建的它的子类PorterDuffXfermode，而事实上，Xfermode只有这一个子类。</p>
+<h1 id="绘制效果"><a href="#绘制效果" class="headerlink" title="绘制效果"></a>绘制效果</h1><p>绘制效果指的就是抗锯齿、填充/轮廓、线条宽度等等这些。</p>
+<h2 id="抗锯齿"><a href="#抗锯齿" class="headerlink" title="抗锯齿"></a>抗锯齿</h2><p>使用setAntiAlias (boolean b)设置是否抗锯齿。</p>
+<h2 id="绘制风格"><a href="#绘制风格" class="headerlink" title="绘制风格"></a>绘制风格</h2><p>使用setStyle(Paint.Style style)设置图形是线条风格还是填充风格的（或者二者并用）。</p>
+<h2 id="线条形状"><a href="#线条形状" class="headerlink" title="线条形状"></a>线条形状</h2><ul>
+<li><p>setStrokeWidth(float width)<br>设置线条宽度。单位为像素，默认值是 0。</p>
+</li>
+<li><p>setStrokeCap(Paint.Cap cap)<br>设置线头的形状。线头形状有三种：BUTT平头、ROUND圆头、SQUARE方头。默认为BUTT。</p>
+</li>
+<li><p>setStrokeJoin(Paint.Join join)<br>设置拐角的形状。有三个值可以选择：MITER尖角、 BEVEL平角和ROUND 圆角。默认为MITER。</p>
+</li>
+<li><p>setStrokeMiter(float miter)<br>这个方法是对于setStrokeJoin()的一个补充，它用于设置MITER型拐角的延长线的最大值，所谓“延长线的最大值”。</p>
+</li>
+</ul>
+<h2 id="色彩优化"><a href="#色彩优化" class="headerlink" title="色彩优化"></a>色彩优化</h2><ul>
+<li><p>setDither(boolean dither)<br>设置图像的抖动。</p>
+</li>
+<li><p>setFilterBitmap(boolean filter)<br>设置是否使用双线性过滤来绘制Bitmap。图像在放大绘制的时候，默认使用的是最近邻插值过滤，这种算法简单，但会出现马赛克现象；而如果开启了双线性过滤，就可以让结果图像显得更加平滑。</p>
+</li>
+</ul>
+<h2 id="PathEffect"><a href="#PathEffect" class="headerlink" title="PathEffect"></a>PathEffect</h2><p>通过setPathEffect(PathEffect effect)给图形的轮廓设置效果，对Canvas所有的图形绘制有效，即对 drawLine() drawCircle() drawPath() 这些方法有效。</p>
+<p>单一效果的PathEffect有：</p>
+<ul>
+<li><p>CornerPathEffect<br>把所有拐角变成圆角。</p>
+</li>
+<li><p>DiscretePathEffect<br>把线条进行随机的偏离，让轮廓变得乱七八糟。</p>
+</li>
+<li><p>DashPathEffect<br>使用虚线来绘制线条。</p>
+</li>
+<li><p>PathDashPathEffect<br>比DashPathEffect多一个前缀Path，顾名思义，它是使用一个Path来绘制“虚线”。</p>
+</li>
+</ul>
+<p>组合效果类的PathEffect有：</p>
+<ul>
+<li><p>SumPathEffect<br>按照两种PathEffect分别对目标进行绘制。</p>
+</li>
+<li><p>ComposePathEffect<br>先对目标Path使用一个PathEffect，然后再对这个改变后的Path使用另一个PathEffect。</p>
+</li>
+</ul>
+<h2 id="添加阴影"><a href="#添加阴影" class="headerlink" title="添加阴影"></a>添加阴影</h2><p>具体使用setShadowLayer(float radius, float dx, float dy, int shadowColor)方法。radius是阴影的模糊范围；dx dy是阴影的偏移量；shadowColor是阴影的颜色。</p>
+<p>如果要清除阴影层，使用clearShadowLayer()方法。</p>
+<h2 id="MaskFilter"><a href="#MaskFilter" class="headerlink" title="MaskFilter"></a>MaskFilter</h2><p>setShadowLayer()设置的是绘制层下方的附加效果；而MaskFilter和它相反，setMaskFilter(filter)设置的是绘制层上方的附加效果。</p>
+<p>前面有一个setColorFilter(filter)方法，它对每个像素的颜色进行过滤；而setMaskFilter(filter)是基于整个画面来进行过滤。</p>
+<ul>
+<li>BlurMaskFilter 模糊效果</li>
+<li>EmbossMaskFilter 浮雕效果</li>
+</ul>
+<h2 id="获取绘制的Path"><a href="#获取绘制的Path" class="headerlink" title="获取绘制的Path"></a>获取绘制的Path</h2><p>根据Paint的设置，计算出绘制Path或文字时的<strong>实际Path</strong>，所谓实际Path，指的就是drawPath()绘制内容的轮廓，要算上线条宽度和设置的PathEffect。</p>
+<ul>
+<li><p>getFillPath(Path src, Path dst)<br>src是原Path，而dst就是实际Path的保存位置。</p>
+</li>
+<li><p>getTextPath()<br>获取的就是目标文字所对应的Path。</p>
+</li>
+</ul>
+<p>获取绘制的Path主要是用于图形和文字的装饰效果的位置计算，比如<a href="https://medium.com/google-developers/a-better-underline-for-android-90ba3a2e4fb" target="_blank" rel="noopener">自定义的下划线效果</a>。</p>
+<h1 id="文字绘制"><a href="#文字绘制" class="headerlink" title="文字绘制"></a>文字绘制</h1><p>Paint有很多文字绘制相关的方法，即和drawText()相关的方法，这些方法可以设置文字大小、文字间隔、文字效果等。除此之外，Paint还有很多与文字绘制相关的设置或计算的方法，具体可以参考官方文档。</p>
+<h1 id="初始化相关"><a href="#初始化相关" class="headerlink" title="初始化相关"></a>初始化相关</h1><p>这一类方法很简单，它们是用来初始化Paint对象，或者是批量设置Paint的多个属性的方法。</p>
+<ul>
+<li><p>reset()<br>重置Paint的所有属性为默认值。相当于重新new一个，不过性能相对要高。</p>
+</li>
+<li><p>set(Paint src)<br>把src的所有属性全部复制过来。相当于调用src所有的get方法，然后调用这个Paint的对应的set方法来设置它们。</p>
+</li>
+<li><p>setFlags(int flags)<br>批量设置flags。相当于依次调用它们的set方法。</p>
+</li>
+</ul>
+<blockquote>
+<p>这里只是简单介绍了Paint提供的绘制功能，详细介绍可以参考HenCoder的<a href="http://hencoder.com/ui-1-2/" target="_blank" rel="noopener">Paint详解</a>。</p>
+</blockquote>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/21/事件拦截机制/" itemprop="url">
-              
-                <span itemprop="name">事件拦截机制</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-21T18:08:19+08:00"
-              content="2017-12-21" >
-          12-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/20/自定义View和ViewGroup/" itemprop="url">
-              
-                <span itemprop="name">自定义View和ViewGroup</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-20T19:05:31+08:00"
-              content="2017-12-20" >
-          12-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/20/控件的测量和绘制/" itemprop="url">
-              
-                <span itemprop="name">控件的测量和绘制</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-20T14:54:17+08:00"
-              content="2017-12-20" >
-          12-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/wechatpay.jpg" alt="Zhou Zejin 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/alipay.jpg" alt="Zhou Zejin 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/绘图处理/" rel="tag"># 绘图处理</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/02/图像特效/" rel="next" title="图像特效">
+                <i class="fa fa-chevron-left"></i> 图像特效
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
 
 
           </div>
@@ -700,6 +608,8 @@
 
 
           
+  
+
 
         </div>
         
@@ -722,8 +632,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -804,6 +723,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#颜色处理"><span class="nav-number">1.</span> <span class="nav-text">颜色处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#颜色设置"><span class="nav-number">1.1.</span> <span class="nav-text">颜色设置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#直接设置颜色"><span class="nav-number">1.1.1.</span> <span class="nav-text">直接设置颜色</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用Shader"><span class="nav-number">1.1.2.</span> <span class="nav-text">使用Shader</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置滤色器"><span class="nav-number">1.2.</span> <span class="nav-text">设置滤色器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置TransferMode"><span class="nav-number">1.3.</span> <span class="nav-text">设置TransferMode</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#绘制效果"><span class="nav-number">2.</span> <span class="nav-text">绘制效果</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#抗锯齿"><span class="nav-number">2.1.</span> <span class="nav-text">抗锯齿</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#绘制风格"><span class="nav-number">2.2.</span> <span class="nav-text">绘制风格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线条形状"><span class="nav-number">2.3.</span> <span class="nav-text">线条形状</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#色彩优化"><span class="nav-number">2.4.</span> <span class="nav-text">色彩优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PathEffect"><span class="nav-number">2.5.</span> <span class="nav-text">PathEffect</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加阴影"><span class="nav-number">2.6.</span> <span class="nav-text">添加阴影</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MaskFilter"><span class="nav-number">2.7.</span> <span class="nav-text">MaskFilter</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获取绘制的Path"><span class="nav-number">2.8.</span> <span class="nav-text">获取绘制的Path</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#文字绘制"><span class="nav-number">3.</span> <span class="nav-text">文字绘制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#初始化相关"><span class="nav-number">4.</span> <span class="nav-text">初始化相关</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -923,6 +858,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
 
   
 

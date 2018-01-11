@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="自定义控件," />
 
 
 
@@ -81,16 +81,21 @@
 
 
 
-<meta name="description" content="Sunny的个人Blog，主要记录Android学习总结，欢迎交流~">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Zhou Zejin&#39;s Home">
-<meta property="og:url" content="http://yoursite.com/archives/index.html">
+<meta name="description" content="在对控件进行测量、布局、绘制一系列工作后，想要让控件与用户进行交互，就需要涉及到Android的事件拦截机制。Android系统提供了一套完善的事件分发、拦截、处理机制，让控件能够对用户输入的事件进行准确的响应和处理。 触摸事件Android中使用MotionEvent类代表一个触摸事件，比如用户的点击、滑动事件，从M">
+<meta name="keywords" content="自定义控件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="事件拦截机制">
+<meta property="og:url" content="http://yoursite.com/2017/12/21/事件拦截机制/index.html">
 <meta property="og:site_name" content="Zhou Zejin&#39;s Home">
-<meta property="og:description" content="Sunny的个人Blog，主要记录Android学习总结，欢迎交流~">
+<meta property="og:description" content="在对控件进行测量、布局、绘制一系列工作后，想要让控件与用户进行交互，就需要涉及到Android的事件拦截机制。Android系统提供了一套完善的事件分发、拦截、处理机制，让控件能够对用户输入的事件进行准确的响应和处理。 触摸事件Android中使用MotionEvent类代表一个触摸事件，比如用户的点击、滑动事件，从MotionEvent类中，可以获取事件的类型、点击坐标等一系列信息。 事件拦截机">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/uploads/android/事件拦截机制.png">
+<meta property="og:image" content="http://yoursite.com/uploads/android/事件处理.png">
+<meta property="og:updated_time" content="2017-12-21T10:23:01.674Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Zhou Zejin&#39;s Home">
-<meta name="twitter:description" content="Sunny的个人Blog，主要记录Android学习总结，欢迎交流~">
+<meta name="twitter:title" content="事件拦截机制">
+<meta name="twitter:description" content="在对控件进行测量、布局、绘制一系列工作后，想要让控件与用户进行交互，就需要涉及到Android的事件拦截机制。Android系统提供了一套完善的事件分发、拦截、处理机制，让控件能够对用户输入的事件进行准确的响应和处理。 触摸事件Android中使用MotionEvent类代表一个触摸事件，比如用户的点击、滑动事件，从MotionEvent类中，可以获取事件的类型、点击坐标等一系列信息。 事件拦截机">
+<meta name="twitter:image" content="http://yoursite.com/uploads/android/事件拦截机制.png">
 
 
 
@@ -120,13 +125,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/archives/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/12/21/事件拦截机制/"/>
 
 
 
 
 
-  <title>归档 | Zhou Zejin's Home</title>
+  <title>事件拦截机制 | Zhou Zejin's Home</title>
   
 
 
@@ -145,7 +150,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -283,416 +288,237 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/21/事件拦截机制/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhou Zejin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/Sanji.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhou Zejin's Home">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">事件拦截机制</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-21T18:08:19+08:00">
+                2017-12-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-        嗯..! 目前共计 12 篇日志。 继续努力。
-      </span>
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
 
-      
-
-        
-        
-        
-
-        
+                
+                
+              
+            </span>
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
 
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/11/Paint使用/" itemprop="url">
-              
-                <span itemprop="name">Paint使用</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-11T19:09:35+08:00"
-              content="2018-01-11" >
-          01-11
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/02/图像特效/" itemprop="url">
-              
-                <span itemprop="name">图像特效</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-02T19:58:44+08:00"
-              content="2018-01-02" >
-          01-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/02/XML绘图/" itemprop="url">
-              
-                <span itemprop="name">XML绘图</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-02T10:03:01+08:00"
-              content="2018-01-02" >
-          01-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/02/2D绘图/" itemprop="url">
-              
-                <span itemprop="name">2D绘图</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-02T09:42:10+08:00"
-              content="2018-01-02" >
-          01-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2017">2017</h1>
-          </div>
-        
-        
+            
+          
 
-        
+          
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/29/屏幕信息/" itemprop="url">
-              
-                <span itemprop="name">屏幕信息</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-29T09:43:49+08:00"
-              content="2017-12-29" >
-          12-29
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+        </div>
+      </header>
+    
 
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/27/实现滑动的方法/" itemprop="url">
-              
-                <span itemprop="name">实现滑动的方法</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-27T18:26:58+08:00"
-              content="2017-12-27" >
-          12-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/26/滑动实现原理/" itemprop="url">
-              
-                <span itemprop="name">滑动实现原理</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-26T19:40:57+08:00"
-              content="2017-12-26" >
-          12-26
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <p>在对控件进行测量、布局、绘制一系列工作后，想要让控件与用户进行交互，就需要涉及到Android的事件拦截机制。Android系统提供了一套完善的事件分发、拦截、处理机制，让控件能够对用户输入的事件进行准确的响应和处理。</p>
+<h1 id="触摸事件"><a href="#触摸事件" class="headerlink" title="触摸事件"></a>触摸事件</h1><p>Android中使用MotionEvent类代表一个触摸事件，比如用户的点击、滑动事件，从MotionEvent类中，可以获取事件的类型、点击坐标等一系列信息。</p>
+<h1 id="事件拦截机制分析"><a href="#事件拦截机制分析" class="headerlink" title="事件拦截机制分析"></a>事件拦截机制分析</h1><p>在描述事件拦截机制前，要明确Android的视图是树结构。树结构具有层次，一个事件会从顶层逐步向低层进行分发。如果处于上层的ViewGroup要对事件进行处理，首先要对事件进行拦截，然后再进行处理；如果不进行处理，那么需要把事件分发到底层的View或者ViewGroup。如果底层的View处理了事件，那么这个事件的生命周期就结束了，否则，这个事件还要沿着原路向上层传递。这时，上层ViewGroup可以选择对事件进行处理，或者继续向上层传递，直到事件被处理为止。</p>
+<p>以上分析可以用下面的流程图来表示：</p>
+<p><img src="/uploads/android/事件拦截机制.png" alt="事件拦截机制"></p>
+<h1 id="事件处理的关键方法"><a href="#事件处理的关键方法" class="headerlink" title="事件处理的关键方法"></a>事件处理的关键方法</h1><p>当控件想要分发一个事件时，会调用dispatchTouchEvent()方法。如果返回true，表示控件完成了这个事件的分发工作；如果返回false，表示事件分发工作未完成，事件将交由上层控件处理。</p>
+<p>当控件想要拦截一个事件时，会调用onInterceptTouchEvent()方法。只有ViewGroup才拥有该方法，因为父控件只能是ViewGroup。当父控件要对分发到子控件的事件进行处理时，就需要调用此方法，如果返回true，表示父控件拦截了这个事件；如果返回false，父控件不对事件进行拦截，将把事件分发到子控件。</p>
+<p>当控件想要处理一个事件时，会调用onTouchEvent()方法。在这个方法中，可以根据MotionEvent类提供的信息做相应的操作。操作完毕后，如果返回true，表示事件被处理了，该事件就结束了；如果返回false，表示事件没有被处理，事件将交由上层控件，直到被处理为止。</p>
+<p>下面使用时序图描述一个事件处理的实例：父控件将事件分发给控件，控件接着将事件分发给子控件，然而子控件没有处理事件，把事件返还给了控件，最后控件自己处理了这个事件。</p>
+<p><img src="/uploads/android/事件处理.png" alt="事件处理"></p>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/21/事件拦截机制/" itemprop="url">
-              
-                <span itemprop="name">事件拦截机制</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-21T18:08:19+08:00"
-              content="2017-12-21" >
-          12-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/20/自定义View和ViewGroup/" itemprop="url">
-              
-                <span itemprop="name">自定义View和ViewGroup</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-20T19:05:31+08:00"
-              content="2017-12-20" >
-          12-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2017/12/20/控件的测量和绘制/" itemprop="url">
-              
-                <span itemprop="name">控件的测量和绘制</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-12-20T14:54:17+08:00"
-              content="2017-12-20" >
-          12-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/wechatpay.jpg" alt="Zhou Zejin 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/alipay.jpg" alt="Zhou Zejin 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/自定义控件/" rel="tag"># 自定义控件</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/20/自定义View和ViewGroup/" rel="next" title="自定义View和ViewGroup">
+                <i class="fa fa-chevron-left"></i> 自定义View和ViewGroup
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/26/滑动实现原理/" rel="prev" title="滑动实现原理">
+                滑动实现原理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><a class="extend next" rel="next" href="/archives/page/2/"><i class="fa fa-angle-right"></i></a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
 
 
           </div>
@@ -700,6 +526,8 @@
 
 
           
+  
+
 
         </div>
         
@@ -722,8 +550,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -804,6 +641,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#触摸事件"><span class="nav-number">1.</span> <span class="nav-text">触摸事件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#事件拦截机制分析"><span class="nav-number">2.</span> <span class="nav-text">事件拦截机制分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#事件处理的关键方法"><span class="nav-number">3.</span> <span class="nav-text">事件处理的关键方法</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -923,6 +776,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
 
   
 
