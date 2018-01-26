@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Activity," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Zhou Zejin's Home" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="Activity任务栈一个APP通常有多个Activity，这些Activity通过栈结构保存，栈底是整个任务栈(Task)的发起者。 当一个APP启动时，如果系统中不存在该APP的任务栈，那么系统会为其创建一个任务栈，此后，这个APP启动的所有Activity都将在这个任务栈中被管理。需要注意的是，一个Task中的A">
+<meta name="keywords" content="Activity">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Activity任务栈和启动模式">
+<meta property="og:url" content="http://yoursite.com/2018/01/24/Activity任务栈和启动模式/index.html">
+<meta property="og:site_name" content="Zhou Zejin&#39;s Home">
+<meta property="og:description" content="Activity任务栈一个APP通常有多个Activity，这些Activity通过栈结构保存，栈底是整个任务栈(Task)的发起者。 当一个APP启动时，如果系统中不存在该APP的任务栈，那么系统会为其创建一个任务栈，此后，这个APP启动的所有Activity都将在这个任务栈中被管理。需要注意的是，一个Task中的Activity可以来自不同的APP，同一个APP的Activity也可能存在于多">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/uploads/android/singletask_backstack.png">
+<meta property="og:updated_time" content="2018-01-26T07:57:34.529Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Activity任务栈和启动模式">
+<meta name="twitter:description" content="Activity任务栈一个APP通常有多个Activity，这些Activity通过栈结构保存，栈底是整个任务栈(Task)的发起者。 当一个APP启动时，如果系统中不存在该APP的任务栈，那么系统会为其创建一个任务栈，此后，这个APP启动的所有Activity都将在这个任务栈中被管理。需要注意的是，一个Task中的Activity可以来自不同的APP，同一个APP的Activity也可能存在于多">
+<meta name="twitter:image" content="http://yoursite.com/uploads/android/singletask_backstack.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/24/Activity任务栈和启动模式/"/>
+
+
+
+
+
+  <title>Activity任务栈和启动模式 | Zhou Zejin's Home</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Zhou Zejin's Home</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">想象力比知识更重要！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/24/Activity任务栈和启动模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhou Zejin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/Sanji.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhou Zejin's Home">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Activity任务栈和启动模式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-24T16:25:50+08:00">
+                2018-01-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Activity任务栈"><a href="#Activity任务栈" class="headerlink" title="Activity任务栈"></a>Activity任务栈</h1><p>一个APP通常有多个Activity，这些Activity通过栈结构保存，栈底是整个任务栈(Task)的发起者。</p>
+<p>当一个APP启动时，如果系统中不存在该APP的任务栈，那么系统会为其创建一个任务栈，此后，这个APP启动的所有Activity都将在这个任务栈中被管理。需要注意的是，一个Task中的Activity可以来自不同的APP，同一个APP的Activity也可能存在于多个Task中。</p>
+<p>在Task中，一个Activity启动另一个Activity时，新的Activity会被置于栈顶，并处于活动状态，而启动它的Activity依然保留在Task中，处于停止状态，当用户按返回键或者调用finish()方法时，系统会弹出栈顶的Activity，让后面的Activity从停止状态恢复到活动状态。以上是Task管理Activity的一般流程，当需要特殊处理时，就需要使用Activity的启动模式。</p>
+<h1 id="通过Manifest声明启动模式"><a href="#通过Manifest声明启动模式" class="headerlink" title="通过Manifest声明启动模式"></a>通过Manifest声明启动模式</h1><p>可以在AndroidManifest文件中，为Activity声明启动模式，一共能声明四种启动模式：standard、singleTop、singleTask、singleInstance，下面分别进行介绍。</p>
+<h2 id="standard"><a href="#standard" class="headerlink" title="standard"></a>standard</h2><p>默认的启动模式，每次启动Activity都会创建一个新的实例。在该模式下，Activity可以拥有多个实例，并且这些实例既可以位于同一个Task，也可以位于不同的Task。</p>
+<h2 id="singleTop"><a href="#singleTop" class="headerlink" title="singleTop"></a>singleTop</h2><p>在singleTop模式下，启动一个Activity时，系统会判断当前Task中的栈顶Activity是否是要启动的Activity，如果是则不创建新的Activity，然后直接引用这个Activity，并调用其<strong>onNewIntent()</strong>方法；如果不是，则新建该Activity的实例，并将其置于栈顶。</p>
+<p>因此，在同一个Task中，声明为singleTop模式的Activity也会存在多个实例，只不过这些实例不会相邻。</p>
+<h2 id="singleTask"><a href="#singleTask" class="headerlink" title="singleTask"></a>singleTask</h2><p>在singleTask模式下，只允许<strong>一个</strong>包含该Activity实例的Task存在。</p>
+<p>singleTask模式下，Activity的启动方式与<em>android:taskAffinity</em>相关。当B是singleTask模式时，以A启动B来说：</p>
+<ul>
+<li><p>当A和B的taskAffinity相同时：第一次创建B的实例时，<strong>并不会启动新的Task</strong>，而是直接将B添加到A所在的Task；否则，将B所在Task中位于B之上的全部Activity都销毁，然后跳转到B中，并调用其<strong>onNewIntent()</strong>方法。</p>
+</li>
+<li><p>当A和B的taskAffinity不同时：第一次创建B的实例时，<strong>会启动新的Task</strong>，然后将B添加到新建的Task中；否则，将B所在Task中位于B之上的全部Activity都销毁，然后跳转到B中，并调用其<strong>onNewIntent()</strong>方法。</p>
+</li>
+</ul>
+<p>注意，当要启动的Activity在其它APP的Task中，会在返回栈(Back Stack)中将要启动Activity所在的Task置于当前Task之前，具体过程如下图所示：</p>
+<p><img src="/uploads/android/singletask_backstack.png" alt="singleTask启动模式"></p>
+<h2 id="singleInstance"><a href="#singleInstance" class="headerlink" title="singleInstance"></a>singleInstance</h2><p>singleInstance模式下，任意时刻只允许存在唯一的Activity实例，而且该Activity所在的Task不能容纳除该Activity之外的其他Activity实例。其它Activity要启动该Activity，只需要打开这个分离的Task，并调用其<strong>onNewIntent()</strong>方法。</p>
+<p>singleInstance模式经常用于需要与应用分离的界面，该模式的Activity实例即使启动其它Activity，这些Activity也会自动运行于另一个Task中。</p>
+<p>singleInstance与singleTask一个明显区别是：singleTask所在的Task中能有其它的Activity，而singleInstance的Task中不能有其他Activity。</p>
+<p><strong>注意</strong></p>
+<blockquote>
+<p>如果ActivityA处于singleTask或singleInstance启动模式，当ActivityA通过startActivityForResult()方法启动另一个ActivityB时，将会直接返回RESULT_CANCELED，而不会等待ActivityB返回。因为Android系统不允许不同的Task之间直接传递数据，如果有这样的需要，只能通过onNewIntent()方法使用Intent传递。</p>
+</blockquote>
+<h1 id="通过Intent-Flags声明启动模式"><a href="#通过Intent-Flags声明启动模式" class="headerlink" title="通过Intent Flags声明启动模式"></a>通过Intent Flags声明启动模式</h1><p>除了在AndroidManifest文件中声明启动模式，还可以在启动Activity时，通过Intent中声明启动模式，这种Flag存在多个，下面介绍几个常用的启动Flag。</p>
+<ul>
+<li>Intent.FLAG_ACTIVITY_NO_HISTORY</li>
+</ul>
+<p>如果一个Activity是由该模式启动，当这个Activity再去启动其它Activity后，这个Activity就会被销毁，不会保留在Task中。</p>
+<ul>
+<li>Intent.FLAG_ACTIVITY_SINGLE_TOP</li>
+</ul>
+<p>这个Flag的效果与singleTop启动模式的效果相同。</p>
+<ul>
+<li>Intent.FLAG_ACTIVITY_NEW_TASK</li>
+</ul>
+<p>这个Flag的效果会受到<strong>taskAffinity</strong>属性影响，当B声明为该模式，以A启动B来说：</p>
+<p>当A和B的taskAffinity相同时，与standard模式效果一样，每次都在当前Task新建B的实例。</p>
+<p>当A和B的taskAffinity不同时，如果是首次启动，会新建一个Task，并将该Activity实例添加到Task中；如果再次启动，只会把该Activity所在Task置于前台，但是<strong>不会</strong>将该Activity置于栈顶，也<strong>不会</strong>调用其onNewIntent()方法。</p>
+<p>该Flag通常用于其它组件启动一个Activity，因为其它组件不存在任何Task中，<strong>可能</strong>需要新建一个Task管理Activity实例，比如，使用Service启动Activity的场景。不过，当系统存在一个与其taskAffinity属性相同的Task时，这时就不会新建Task，而会直接在这个Task中新建Activity实例。</p>
+<ul>
+<li>Intent.FLAG_ACTIVITY_CLEAR_TOP</li>
+</ul>
+<p>如果要启动的Activity在<strong>当前</strong>的Task中，会销毁该Activity之上的所有其它Activity，从而将其置于栈顶；否则，在当前Task新建Activity实例。</p>
+<p>不过，当要启动的Activity同时被声明为<strong>standard模式</strong>时，该Activity实例也会跟着其它Activity从栈顶弹出，然后重新创建该Activity。之所以这样，是因为standard模式下，总是创建新实例响应Intent。</p>
+<p>总的来说，该模式只会清空栈顶，是通过新建实例还是通过onNewIntent()响应Intent启动消息，要看该Activity的其它启动模式。</p>
+<p>通常将FLAG_ACTIVITY_CLEAR_TOP与FLAG_ACTIVITY_NEW_TASK混合使用，来定位存在于其他Task中的Activity实例，并将其置于栈顶。</p>
+<ul>
+<li>Intent.FLAG_ACTIVITY_CLEAR_TASK</li>
+</ul>
+<p>这个Flag用来清空Task，单独使用没有什么效果，通常与FLAG_ACTIVITY_NEW_TASK混合使用，这时会受到<strong>taskAffinity</strong>属性影响，当B声明为该模式，以A启动B来说：</p>
+<p>当A和B的taskAffinity相同时，清空当前Task，并在当前Task中新建Activity实例。</p>
+<p>当A和B的taskAffinity不同时，如果首次启动，新建Task，并在新Task新建Activity实例；如果再次启动，则清空实例所在的Task，再新建Activity。</p>
+<p><strong>注意</strong></p>
+<blockquote>
+<p>通过Intent Flags声明的启动模式能够覆盖通过Manifest文件声明的启动模式，因此，如果它们之间有冲突时，以Flags为准。</p>
+</blockquote>
+<h1 id="Task相关的属性"><a href="#Task相关的属性" class="headerlink" title="Task相关的属性"></a>Task相关的属性</h1><p>除了用启动模式可以控制Task，还可以使用Task相关的属性控制Task，这些属性在Manifest文件的Activity节点声明，常用的有：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">android:taskAffinity="string"</span><br><span class="line">android:allowTaskReparenting=["true" | "false"]</span><br><span class="line">android:alwaysRetainTaskState=["true" | "false"]</span><br><span class="line">android:clearTaskOnLaunch=["true" | "false"]</span><br><span class="line">android:finishOnTaskLaunch=["true" | "false"]</span><br></pre></td></tr></table></figure>
+<h2 id="处理Affinity"><a href="#处理Affinity" class="headerlink" title="处理Affinity"></a>处理Affinity</h2><ul>
+<li>taskAffinity</li>
+</ul>
+<p>介绍启动模式的时候已经提到过这个属性。每个Activity都有taskAffinity属性，这个属性指出了它希望进入的Task。如果一个Activity没有显式的指明该Activity的taskAffinity，那么它的这个属性就等于Application指明的taskAffinity，如果Application也没有指明，那么该taskAffinity的值就等于包名。而Task也有自己的affinity属性，它的值等于它的根Activity的taskAffinity的值。</p>
+<ul>
+<li>allowTaskReparenting</li>
+</ul>
+<p>是否允许activity重新指定Task，默认值是false。</p>
+<p>如果一个Activity的allowTaskReparenting设置为true，它进入后台后，当一个和它有相同taskAffinity属性的Task进入前台时，它会重新宿主，进入到该前台的Task中。</p>
+<h2 id="清空任务栈"><a href="#清空任务栈" class="headerlink" title="清空任务栈"></a>清空任务栈</h2><p>一般来说，如果一个Task很长时间没有被用户使用，那么系统会清空这个Task中除了栈底Activity(Root Activity)之外的所有其它Activity，当用户重新进入这个Task时，只有Root Activity会被恢复。可以使用以下属性修改系统的这个默认行为。</p>
+<ul>
+<li>alwaysRetainTaskState</li>
+</ul>
+<p>默认值是false，如果将Root Activity的这个属性设置为true，那么该Activity所在的Task将不会被清空，即使很长时间不使用，这个Task中所有Activity的状态都会被保存。</p>
+<ul>
+<li>clearTaskOnLaunch</li>
+</ul>
+<p>默认值是false，如果将Root Activity的这个属性设置为true，不管用户什么时候离开该Activity所在的Task，系统会立刻清空这个Task中除了Root Activity之外的所有其它Activity，这个行为与alwaysRetainTaskState刚好相反。</p>
+<ul>
+<li>finishOnTaskLaunch</li>
+</ul>
+<p>默认值是false，如果某个Activity的finishOnTaskLaunch属性设置位true，只要你一离开该Activity所在的Task, 系统会立刻清除这个Activity, 不管这个Activity在Task的任何位置。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/wechatpay.jpg" alt="Zhou Zejin 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/alipay.jpg" alt="Zhou Zejin 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Activity/" rel="tag"># Activity</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/24/Activity状态和生命周期/" rel="next" title="Activity状态和生命周期">
+                <i class="fa fa-chevron-left"></i> Activity状态和生命周期
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/Sanji.jpg"
+                alt="Zhou Zejin" />
+            
+              <p class="site-author-name" itemprop="name">Zhou Zejin</p>
+              <p class="site-description motion-element" itemprop="description">Sunny的个人Blog，主要记录Android学习总结，欢迎交流~</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/zhouzejin" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Activity任务栈"><span class="nav-number">1.</span> <span class="nav-text">Activity任务栈</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#通过Manifest声明启动模式"><span class="nav-number">2.</span> <span class="nav-text">通过Manifest声明启动模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#standard"><span class="nav-number">2.1.</span> <span class="nav-text">standard</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#singleTop"><span class="nav-number">2.2.</span> <span class="nav-text">singleTop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#singleTask"><span class="nav-number">2.3.</span> <span class="nav-text">singleTask</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#singleInstance"><span class="nav-number">2.4.</span> <span class="nav-text">singleInstance</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#通过Intent-Flags声明启动模式"><span class="nav-number">3.</span> <span class="nav-text">通过Intent Flags声明启动模式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Task相关的属性"><span class="nav-number">4.</span> <span class="nav-text">Task相关的属性</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#处理Affinity"><span class="nav-number">4.1.</span> <span class="nav-text">处理Affinity</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#清空任务栈"><span class="nav-number">4.2.</span> <span class="nav-text">清空任务栈</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhou Zejin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

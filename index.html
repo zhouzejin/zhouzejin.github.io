@@ -298,7 +298,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/11/Paint使用/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/24/Activity任务栈和启动模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhou Zejin">
@@ -317,7 +317,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/11/Paint使用/" itemprop="url">Paint使用</a></h1>
+                <a class="post-title-link" href="/2018/01/24/Activity任务栈和启动模式/" itemprop="url">Activity任务栈和启动模式</a></h1>
         
 
         <div class="post-meta">
@@ -329,8 +329,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-11T19:09:35+08:00">
-                2018-01-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-24T16:25:50+08:00">
+                2018-01-24
               </time>
             
 
@@ -391,13 +391,12 @@
       
         
           
-          在2D绘图中可以了解到Paint的基本使用，使用这些基本方法可以实现一般的绘制需求，如果要实现更加丰富的绘图效果，需要了解Paint的更详细使用。
-Paint的方法按功能可以分为四类：颜色处理、绘制效果、文字绘制和初始化相关。
-颜色处理颜色处理有三个层次：直接使用设置颜色的API给图形和文字设置颜色
+          Activity任务栈一个APP通常有多个Activity，这些Activity通过栈结构保存，栈底是整个任务栈(Task)的发起者。
+当一个APP启动时，如果系统中不存在该APP的任务栈，那么系统会为其创建一个任务栈，此后，这个APP启动的所有Activity都将在这个任务栈中被管理。需要注意的是
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/01/11/Paint使用/#more" rel="contents">
+            <a class="btn" href="/2018/01/24/Activity任务栈和启动模式/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -448,7 +447,7 @@ Paint的方法按功能可以分为四类：颜色处理、绘制效果、文字
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/02/图像特效/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/24/Activity状态和生命周期/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhou Zejin">
@@ -467,7 +466,7 @@ Paint的方法按功能可以分为四类：颜色处理、绘制效果、文字
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/02/图像特效/" itemprop="url">图像特效</a></h1>
+                <a class="post-title-link" href="/2018/01/24/Activity状态和生命周期/" itemprop="url">Activity状态和生命周期</a></h1>
         
 
         <div class="post-meta">
@@ -479,8 +478,8 @@ Paint的方法按功能可以分为四类：颜色处理、绘制效果、文字
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-02T19:58:44+08:00">
-                2018-01-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-24T14:10:06+08:00">
+                2018-01-24
               </time>
             
 
@@ -541,12 +540,19 @@ Paint的方法按功能可以分为四类：颜色处理、绘制效果、文字
       
         
           
-          图像特效按照处理对象一般可以分为颜色特效和图形特效两类，下面分别进行介绍。
-颜色特效在Android系统中，通常使用Bitmap（位图）的数据结构来表示一张图片，它包含了图片的所有数据。Bitmap由点阵和颜色值组成，点阵是图片像素的矩阵，其中每个元素对应图片的一个像素；颜色值（ARGB）分别对应透
+          Activity状态Activity有多种状态，并且在这些状态之间可以相互切换，从而控制自己的生命周期。
+
+Resumed
+
+这个状态的Activity处于Activity任务栈的最顶层，对用户可见，并且具有焦点，能与用户进行交互。
+
+Paused
+
+当Activity失去焦点，被一个非全屏的或者透
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/01/02/图像特效/#more" rel="contents">
+            <a class="btn" href="/2018/01/24/Activity状态和生命周期/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -597,7 +603,7 @@ Paint的方法按功能可以分为四类：颜色处理、绘制效果、文字
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/02/XML绘图/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/23/阴影和裁剪View及Drawable着色/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhou Zejin">
@@ -616,7 +622,7 @@ Paint的方法按功能可以分为四类：颜色处理、绘制效果、文字
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/02/XML绘图/" itemprop="url">XML绘图</a></h1>
+                <a class="post-title-link" href="/2018/01/23/阴影和裁剪View及Drawable着色/" itemprop="url">阴影和裁剪View及Drawable着色</a></h1>
         
 
         <div class="post-meta">
@@ -628,8 +634,8 @@ Paint的方法按功能可以分为四类：颜色处理、绘制效果、文字
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-02T10:03:01+08:00">
-                2018-01-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-23T20:35:47+08:00">
+                2018-01-23
               </time>
             
 
@@ -690,12 +696,14 @@ Paint的方法按功能可以分为四类：颜色处理、绘制效果、文字
       
         
           
-          Bitmap在XML中使用Bitmap的语法如下所示：
-123456789101112&lt;?xml version="1.0" encoding="utf-8"?&gt;&lt;bitmap    xmlns:android="http://schemas.android.com/apk/res
+          阴影效果Android5.0以前，通常用X和Y两个属性表示View的平面位置，而在Android5.0中，增加了一个新属性Z，对应于垂直方向的位置，让View具有立体的效果，Z属性通过阴影的大小表示View的高低。
+View的Z值有两部分组成：
+
+elevation：静态的，通过android:el
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/01/02/XML绘图/#more" rel="contents">
+            <a class="btn" href="/2018/01/23/阴影和裁剪View及Drawable着色/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -746,7 +754,7 @@ Paint的方法按功能可以分为四类：颜色处理、绘制效果、文字
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/02/2D绘图/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/23/使用Palette提取颜色/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhou Zejin">
@@ -765,7 +773,7 @@ Paint的方法按功能可以分为四类：颜色处理、绘制效果、文字
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2018/01/02/2D绘图/" itemprop="url">2D绘图</a></h1>
+                <a class="post-title-link" href="/2018/01/23/使用Palette提取颜色/" itemprop="url">使用Palette提取颜色</a></h1>
         
 
         <div class="post-meta">
@@ -777,8 +785,8 @@ Paint的方法按功能可以分为四类：颜色处理、绘制效果、文字
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-02T09:42:10+08:00">
-                2018-01-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-23T18:59:44+08:00">
+                2018-01-23
               </time>
             
 
@@ -839,17 +847,13 @@ Paint的方法按功能可以分为四类：颜色处理、绘制效果、文字
       
         
           
-          绘图基础Android系统提供了Canvas和Paint对象进行绘图，类似于现实生活中的画板和画笔。
-Canvas提供了绘制各种图形的API，常用的有：
-
-drawPoint(); 绘制点
-drawLine(); 绘制线
-drawRect(); 绘制矩形
-drawRoundRect(); 绘制圆角矩
+          使用Palette提取当前图片的颜色，然后根据提取的颜色去设置当前主题的颜色，可以让主题动态适应当前页面的色调，做到整个APP颜色基调统一。
+使用支持库使用Palette要配置对应的Support Library。
+123456789android &#123;  compileSdkVersion
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2018/01/02/2D绘图/#more" rel="contents">
+            <a class="btn" href="/2018/01/23/使用Palette提取颜色/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -900,7 +904,7 @@ drawRoundRect(); 绘制圆角矩
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/29/屏幕信息/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/23/Material主题/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhou Zejin">
@@ -919,7 +923,7 @@ drawRoundRect(); 绘制圆角矩
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/29/屏幕信息/" itemprop="url">屏幕信息</a></h1>
+                <a class="post-title-link" href="/2018/01/23/Material主题/" itemprop="url">Material主题</a></h1>
         
 
         <div class="post-meta">
@@ -931,8 +935,8 @@ drawRoundRect(); 绘制圆角矩
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-29T09:43:49+08:00">
-                2017-12-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-23T16:52:45+08:00">
+                2018-01-23
               </time>
             
 
@@ -993,16 +997,15 @@ drawRoundRect(); 绘制圆角矩
       
         
           
-          Android手机屏幕的尺寸、分辨率多种多样，这为绘图造成了一定的难度，想要在不同的屏幕上保持绘图的准确性，需要对屏幕的信息有充分了解。
-屏幕参数通常Android手机屏幕有下面几个参数：
+          Material主题能够提供以下功能：
 
-屏幕尺寸指屏幕对角线的长度，通常使用“寸”表示，比如4.7寸手机。
-
-分辨率指屏幕像素点的个数，例如720 
+自定义系统区域的颜色。比如可以修改Status Bar的颜色，使APP的颜色风格和系统的颜色风格保持统一。
+为系统Widget提供触摸反馈动画。具体看以参考MaterialDesign中的动画。
+提供Activity&amp;Fragment过渡动画。具体可
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/29/屏幕信息/#more" rel="contents">
+            <a class="btn" href="/2018/01/23/Material主题/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1053,7 +1056,7 @@ drawRoundRect(); 绘制圆角矩
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/27/实现滑动的方法/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/23/SVG和矢量动画/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhou Zejin">
@@ -1072,7 +1075,7 @@ drawRoundRect(); 绘制圆角矩
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/27/实现滑动的方法/" itemprop="url">实现滑动的方法</a></h1>
+                <a class="post-title-link" href="/2018/01/23/SVG和矢量动画/" itemprop="url">SVG和矢量动画</a></h1>
         
 
         <div class="post-meta">
@@ -1084,8 +1087,8 @@ drawRoundRect(); 绘制圆角矩
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-27T18:26:58+08:00">
-                2017-12-27
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-23T10:37:21+08:00">
+                2018-01-23
               </time>
             
 
@@ -1146,13 +1149,18 @@ drawRoundRect(); 绘制圆角矩
       
         
           
-          了解滑动实现原理后，可以总结出实现滑动效果的基本思想：当View被触摸时，记录当前触摸点的坐标；当触摸点移动时，记录移动后触摸点的坐标；根据两次获取的坐标计算出触摸点的偏移量，通过偏移量修改View的坐标；不断重复，实现滑动效果。
-接下来介绍实现滑动效果的一些方法。
-layout方法在View进行绘
+          在Android5.0(API Level 21)中开始支持SVG的绘制，SVG有以下几个特点：
+
+可伸缩的矢量图形(Scalable Vector Graphics)
+使用XML格式定义图形
+图形在放大或改变尺寸时，图像不会失真
+基于W3C标准，与Web中的矢量图通用
+
+Android中可以使用&
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/27/实现滑动的方法/#more" rel="contents">
+            <a class="btn" href="/2018/01/23/SVG和矢量动画/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1203,7 +1211,7 @@ layout方法在View进行绘
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/26/滑动实现原理/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/22/MaterialDesign中的动画/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhou Zejin">
@@ -1222,7 +1230,7 @@ layout方法在View进行绘
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/26/滑动实现原理/" itemprop="url">滑动实现原理</a></h1>
+                <a class="post-title-link" href="/2018/01/22/MaterialDesign中的动画/" itemprop="url">MaterialDesign中的动画</a></h1>
         
 
         <div class="post-meta">
@@ -1234,8 +1242,8 @@ layout方法在View进行绘
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-26T19:40:57+08:00">
-                2017-12-26
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-22T19:43:58+08:00">
+                2018-01-22
               </time>
             
 
@@ -1296,13 +1304,12 @@ layout方法在View进行绘
       
         
           
-          滑动的产生View的滑动，本质上是移动View，即改变View所处的位置，这点和动画效果类似，都是通过不断改变View的坐标来实现的。
-因此，要产生滑动效果，需要监听用户的触摸事件，根据事件的坐标信息不断改变View的坐标，使View跟随用户的触摸进行移动。
-滑动是相对的移动，要实现滑动，就必须了解
+          在Android5.0(API Level 21)以后，可以使用Material Design(MD)中的动画可以给用户提供触摸反馈和一致性交互体验。Activity&amp;Fragment过渡动画就是MD中动画的一种，接下来介绍MD中其它类型的动画。
+Ripple AnimationMD大量使用
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/26/滑动实现原理/#more" rel="contents">
+            <a class="btn" href="/2018/01/22/MaterialDesign中的动画/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1353,7 +1360,7 @@ layout方法在View进行绘
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/21/事件拦截机制/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/22/过渡动画框架/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhou Zejin">
@@ -1372,7 +1379,7 @@ layout方法在View进行绘
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/21/事件拦截机制/" itemprop="url">事件拦截机制</a></h1>
+                <a class="post-title-link" href="/2018/01/22/过渡动画框架/" itemprop="url">过渡动画框架</a></h1>
         
 
         <div class="post-meta">
@@ -1384,8 +1391,8 @@ layout方法在View进行绘
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-21T18:08:19+08:00">
-                2017-12-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-22T10:54:49+08:00">
+                2018-01-22
               </time>
             
 
@@ -1446,12 +1453,12 @@ layout方法在View进行绘
       
         
           
-          在对控件进行测量、布局、绘制一系列工作后，想要让控件与用户进行交互，就需要涉及到Android的事件拦截机制。Android系统提供了一套完善的事件分发、拦截、处理机制，让控件能够对用户输入的事件进行准确的响应和处理。
-触摸事件Android中使用MotionEvent类代表一个触摸事件，比如用户的
+          当用户通过键盘输入或者触发其他事件时界面需要做出变化，比如，某个Activity包含一个搜索框，当用户输入数据并提交的时候，Activity会隐藏搜索框同时显示搜索的结果。
+在这种应用场景(Scenes)下，可以通过在不同的View树上运行动画，来提供连续的视觉效果。这些动画不仅仅响应了用户的操作，
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/21/事件拦截机制/#more" rel="contents">
+            <a class="btn" href="/2018/01/22/过渡动画框架/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1502,7 +1509,7 @@ layout方法在View进行绘
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/20/自定义View和ViewGroup/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/18/Activity&Fragment过渡动画/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhou Zejin">
@@ -1521,7 +1528,7 @@ layout方法在View进行绘
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/20/自定义View和ViewGroup/" itemprop="url">自定义View和ViewGroup</a></h1>
+                <a class="post-title-link" href="/2018/01/18/Activity&Fragment过渡动画/" itemprop="url">Activity&Fragment过渡动画</a></h1>
         
 
         <div class="post-meta">
@@ -1533,8 +1540,8 @@ layout方法在View进行绘
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-20T19:05:31+08:00">
-                2017-12-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-18T16:17:36+08:00">
+                2018-01-18
               </time>
             
 
@@ -1595,14 +1602,11 @@ layout方法在View进行绘
       
         
           
-          自定义View在自定义View时，通常需要重写onDraw()方法绘制View的显示内容；如果需要使用wrap_content属性，还需要重写onMeasure()方法进行测量；另外，还可以在attrs.xml文件中为View自定义属性。
-在View中通常用到的回调方法有：
-
-onFinishInf
+          在Android5.0以前，切换Activity或者Fragment时可以通过Activity#overridePendingTransition()或FragmentTransaction#setCustomAnimation()方法增加过场动画，不过效果比较单调，并且只能针对页面中的所有元素，具
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/20/自定义View和ViewGroup/#more" rel="contents">
+            <a class="btn" href="/2018/01/18/Activity&Fragment过渡动画/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1653,7 +1657,7 @@ onFinishInf
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/20/控件的测量和绘制/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/18/布局动画/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Zhou Zejin">
@@ -1672,7 +1676,7 @@ onFinishInf
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/12/20/控件的测量和绘制/" itemprop="url">控件的测量和绘制</a></h1>
+                <a class="post-title-link" href="/2018/01/18/布局动画/" itemprop="url">布局动画</a></h1>
         
 
         <div class="post-meta">
@@ -1684,8 +1688,8 @@ onFinishInf
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-20T14:54:17+08:00">
-                2017-12-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-18T10:22:24+08:00">
+                2018-01-18
               </time>
             
 
@@ -1746,14 +1750,12 @@ onFinishInf
       
         
           
-          View的测量Android系统在绘制View前，要对View进行测量，告诉系统View的大小，这个过程是在View的onMeasure()方法中进行的。
-具体测量View是通过MeasureSpec类，测量模式有一下三种：
-
-EXACTLY当控件的layout_width和layout_heigh
+          Android动画机制提供了视图动画、属性动画和可绘制动画，这些动画都是针对单个View对象的，而布局动画(Layout Animation)作用的对象是ViewGroup，它可以在ViewGroup布局子View时，为子View添加相应的动画效果。
+LayoutAnimationLayoutAni
           ...
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/12/20/控件的测量和绘制/#more" rel="contents">
+            <a class="btn" href="/2018/01/18/布局动画/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1795,7 +1797,7 @@ EXACTLY当控件的layout_width和layout_heigh
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1847,7 +1849,7 @@ EXACTLY当控件的layout_width和layout_heigh
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1869,7 +1871,7 @@ EXACTLY当控件的layout_width和layout_heigh
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">7</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
