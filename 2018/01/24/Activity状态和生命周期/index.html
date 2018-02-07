@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Activity," />
+  <meta name="keywords" content="APP组件," />
 
 
 
@@ -82,7 +82,7 @@
 
 
 <meta name="description" content="Activity状态Activity有多种状态，并且在这些状态之间可以相互切换，从而控制自己的生命周期。  Resumed  这个状态的Activity处于Activity任务栈的最顶层，对用户可见，并且具有焦点，能与用户进行交互。  Paused  当Activity失去焦点，被一个非全屏的或者透明的Activity">
-<meta name="keywords" content="Activity">
+<meta name="keywords" content="APP组件">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Activity状态和生命周期">
 <meta property="og:url" content="http://yoursite.com/2018/01/24/Activity状态和生命周期/index.html">
@@ -90,7 +90,7 @@
 <meta property="og:description" content="Activity状态Activity有多种状态，并且在这些状态之间可以相互切换，从而控制自己的生命周期。  Resumed  这个状态的Activity处于Activity任务栈的最顶层，对用户可见，并且具有焦点，能与用户进行交互。  Paused  当Activity失去焦点，被一个非全屏的或者透明的Activity覆盖时，Activity就处于Paused状态。这时，Activity不能与用户">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://yoursite.com/uploads/android/activity_lifecycle.png">
-<meta property="og:updated_time" content="2018-01-26T01:41:11.644Z">
+<meta property="og:updated_time" content="2018-02-02T01:31:06.775Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Activity状态和生命周期">
 <meta name="twitter:description" content="Activity状态Activity有多种状态，并且在这些状态之间可以相互切换，从而控制自己的生命周期。  Resumed  这个状态的Activity处于Activity任务栈的最顶层，对用户可见，并且具有焦点，能与用户进行交互。  Paused  当Activity失去焦点，被一个非全屏的或者透明的Activity覆盖时，Activity就处于Paused状态。这时，Activity不能与用户">
@@ -431,7 +431,8 @@
 <li>onStart()：初始化一些影响UI系统资源，比如注册能够影响UI的Receivers等。</li>
 </ul>
 <h2 id="Activity重新创建过程"><a href="#Activity重新创建过程" class="headerlink" title="Activity重新创建过程"></a>Activity重新创建过程</h2><p>当Activity处于Paused或Stopped状态时，系统会因为内存不足回收Activity，这时，系统会将Activity的状态通过onSaveInstanceState()方法保存到Bundle对象中。当重新创建Activity时，Bundle对象会被传递到onRestoreInstanceState()和onCreate()方法中，这样就可以通过Bundle对象恢复Activity的状态。Android系统已经默认实现了系统控件的状态保存和恢复，不过只支持提供了android:id属性的View。</p>
-<p>只有当前Activity离开前台，并且有被销毁的可能时，才会调用onSaveInstanceState()方法，如果调用finish()方法正常结束Activity的时候，该方法不会被调用。另外，在横竖屏切换时，系统也会调用onSaveInstanceState()方法保存状态数据，然后再去恢复Activity的状态。</p>
+<p>只有当前Activity离开前台，并且有被销毁的可能时，才会调用onSaveInstanceState()方法，如果调用finish()方法正常结束Activity的时候，该方法不会被调用。</p>
+<p>另外，当系统配置改变时，Activity也会被重新创建，这时会调用onConfigurationChanged()方法。比如，在横竖屏切换时，系统会调用onSaveInstanceState()方法保存状态数据，然后，根据新的配置去恢复Activity的状态。</p>
 <p>onSaveInstanceState()方法一般用来保存Activity的状态数据，如果要保存需要持久化的数据，应该在Activity在前台的时候，寻找合适的时机去保存，如果找不到合适的时机，可以在onStop()方法中进行。</p>
 <p>onSaveInstanceState()方法会在onPause()方法之后、onStop()方法之前调用；onRestoreInstanceState()方法会在onStart()方法之后调用。</p>
 
@@ -480,7 +481,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Activity/" rel="tag"># Activity</a>
+            <a href="/tags/APP组件/" rel="tag"># APP组件</a>
           
         </div>
       
@@ -612,7 +613,7 @@ var jiathis_config={
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -634,7 +635,7 @@ var jiathis_config={
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">10</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

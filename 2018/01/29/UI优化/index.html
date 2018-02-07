@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="性能优化," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Zhou Zejin's Home" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="系统在渲染UI时会消耗大量的资源，一个好的UI不仅该具有良好的视觉效果，还应该具有良好的使用体验。布局优化的任务就让UI在使用过程中不产生卡顿，让APP有更好的用户体验。 UI渲染机制和检测工具渲染机制在Android中，系统通过VSYNC信号触发UI的渲染和重绘，信号发送的间隔时间是16ms。如果系统每次渲染的时间都">
+<meta name="keywords" content="性能优化">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UI优化">
+<meta property="og:url" content="http://yoursite.com/2018/01/29/UI优化/index.html">
+<meta property="og:site_name" content="Zhou Zejin&#39;s Home">
+<meta property="og:description" content="系统在渲染UI时会消耗大量的资源，一个好的UI不仅该具有良好的视觉效果，还应该具有良好的使用体验。布局优化的任务就让UI在使用过程中不产生卡顿，让APP有更好的用户体验。 UI渲染机制和检测工具渲染机制在Android中，系统通过VSYNC信号触发UI的渲染和重绘，信号发送的间隔时间是16ms。如果系统每次渲染的时间都控制在16ms之内，那么，UI界面会非常流畅，否则，就会造成丢帧，从而能使界面产">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/uploads/android/GPU-Rendering.png">
+<meta property="og:image" content="http://yoursite.com/uploads/android/profiler-legend.png">
+<meta property="og:image" content="http://yoursite.com/uploads/android/gpu-overdraw.png">
+<meta property="og:updated_time" content="2018-01-30T11:10:45.241Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UI优化">
+<meta name="twitter:description" content="系统在渲染UI时会消耗大量的资源，一个好的UI不仅该具有良好的视觉效果，还应该具有良好的使用体验。布局优化的任务就让UI在使用过程中不产生卡顿，让APP有更好的用户体验。 UI渲染机制和检测工具渲染机制在Android中，系统通过VSYNC信号触发UI的渲染和重绘，信号发送的间隔时间是16ms。如果系统每次渲染的时间都控制在16ms之内，那么，UI界面会非常流畅，否则，就会造成丢帧，从而能使界面产">
+<meta name="twitter:image" content="http://yoursite.com/uploads/android/GPU-Rendering.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/29/UI优化/"/>
+
+
+
+
+
+  <title>UI优化 | Zhou Zejin's Home</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Zhou Zejin's Home</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">想象力比知识更重要！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/29/UI优化/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhou Zejin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/Sanji.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhou Zejin's Home">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">UI优化</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-29T17:09:47+08:00">
+                2018-01-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>系统在渲染UI时会消耗大量的资源，一个好的UI不仅该具有良好的视觉效果，还应该具有良好的使用体验。布局优化的任务就让UI在使用过程中不产生卡顿，让APP有更好的用户体验。</p>
+<h1 id="UI渲染机制和检测工具"><a href="#UI渲染机制和检测工具" class="headerlink" title="UI渲染机制和检测工具"></a>UI渲染机制和检测工具</h1><h2 id="渲染机制"><a href="#渲染机制" class="headerlink" title="渲染机制"></a>渲染机制</h2><p>在Android中，系统通过VSYNC信号触发UI的渲染和重绘，信号发送的间隔时间是16ms。如果系统每次渲染的时间都控制在16ms之内，那么，UI界面会非常流畅，否则，就会造成丢帧，从而能使界面产生卡顿。例如，一次绘制任务耗时20ms，那么，在16ms系统发出VSYNC信号时就无法进行绘制，该帧只能等待下次VSYNC信号来临时才被绘制，这样，16*2ms内都是显示同一帧画面，用户在视觉上就会产生卡顿的感觉。</p>
+<h2 id="检测工具"><a href="#检测工具" class="headerlink" title="检测工具"></a>检测工具</h2><p>Android系统提供了检测UI渲染时间的调试工具。打开“开发者选项”，选择 “Profile GPU Rendering” ，然后选中 “On screen as bars” 选项，这时在屏幕上会显示如下图形：</p>
+<p><img src="/uploads/android/GPU-Rendering.png" alt="GPU渲染时间"></p>
+<p>图中每条柱状图由多种颜色组成，每种颜色的长度表示在渲染时，各个绘制过程消耗的时间。中间的绿色横线表示VSYNC间隔时间16ms，一个良好的UI需要尽量将所有条状图都控制在这条绿线之下。每种颜色表示的绘制过程如下图所示：</p>
+<p><img src="/uploads/android/profiler-legend.png" alt="GPU渲染的各个过程"></p>
+<p>当知道了每个绘制过程的时间后，就可以针对特定的绘制过程进行优化。</p>
+<h3 id="Input-Handing"><a href="#Input-Handing" class="headerlink" title="Input Handing"></a>Input Handing</h3><p>输入处理（Input）颜色的长度表示APP在输入事件回调方法中，处理事件花费的时间长短。</p>
+<p>如果这方面时间花费太多，表示在处理输入事件时做了太多工作，由于回调方法是在主线程上进行的，可以将繁重的工作放到子线程中进行，从而达到优化效果。</p>
+<p>另外，RecyclerView的滑动也属于输入处理，因为滑动会消耗触摸事件，所以，要尽可能快地布局和填充子View。</p>
+<h3 id="Animation"><a href="#Animation" class="headerlink" title="Animation"></a>Animation</h3><p>动画（Anim）颜色的长度表示当前帧执行完所有动画花费的时间。这些常见的动画包括ObjectAnimator, ViewPropertyAnimator和Transitions. </p>
+<p>如果这方面时间花费太多，一般都是执行动画引起属性变化造成的。比如，ListView或RecyclerView在执行fling动画时会快速滑动，引起大量子View的布局和重绘，从而造成执行动画时间过长。</p>
+<h3 id="Measurement和Layout"><a href="#Measurement和Layout" class="headerlink" title="Measurement和Layout"></a>Measurement和Layout</h3><p>测量和布局（Measure）颜色表示系统在测量和布局View时花费的时间。</p>
+<p>如果这方面花费时间太多，一般都是自定义View时，onLayout()和onMeasure()方法执行时间过长造成的。可以用Traceview和Systrace工具检查代码中这样的问题。</p>
+<h3 id="Drawing"><a href="#Drawing" class="headerlink" title="Drawing"></a>Drawing</h3><p>绘制（Draw）颜色表示当前帧绘制View花费的时间，包括所有View执行onDraw()和dispatchDraw()方法的时间。</p>
+<p>如果这方面花费时间太多，一般都是自定View时，onDraw()方法的逻辑太过复杂造成的。</p>
+<h3 id="Sync和Upload"><a href="#Sync和Upload" class="headerlink" title="Sync和Upload"></a>Sync和Upload</h3><p>同步和上传（Upload）颜色表示当前帧中，将Bitmap对象从CPU内存转移到GPU内存花费的时间。</p>
+<p>Android系统在绘制Bitmap时，需要将Bitmap从CPU传递到GPU，然后GPU再进行绘制。注意，在5.0系统上，这个时间用紫色表示。</p>
+<p>如果这方面花费时间太多，一般来说是由两种情况造成的：一个是当前帧显示了一个接近屏幕大小的Bitmap；另一个是当前帧显示了大量缩略图。</p>
+<p>如果要减少这方面的时间，可以使用以下两种方法：</p>
+<ul>
+<li>在显示图片时，不要让高分辨率的图片在低分辨率的屏幕上显示。</li>
+<li>在CPU和GPU内存同步内存之前，利用prepareToDraw()方法异步上传Bitmap对象。</li>
+</ul>
+<h3 id="Issuing-Commands"><a href="#Issuing-Commands" class="headerlink" title="Issuing Commands"></a>Issuing Commands</h3><p>发布命令（Issue）颜色表示绘制屏幕时，发布所有绘制命令到显示列表（Display Lists）花费的时间。</p>
+<p>由于系统绘制屏幕时，会向GPU发布必要的绘制命令，通常这些操作是通过OpenGL的API实现的。如果这方面花费的时间太多，表明在绘制时有太多的绘制命令需要发布。比如：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">1000</span>; i++)</span><br><span class="line">canvas.drawPoint()</span><br></pre></td></tr></table></figure>
+<p>完成以上绘制的发布的绘制命令就完成以下绘制的要多，这样就会在发布命令上花费更多时间。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">canvas.drawPoints(mThousandPointArray);</span><br></pre></td></tr></table></figure>
+<p>所以，在自定义View时，尽量减少draw操作的数量，可以减少发布命令的时间。</p>
+<h3 id="Processing和Swapping-Buffers"><a href="#Processing和Swapping-Buffers" class="headerlink" title="Processing和Swapping Buffers"></a>Processing和Swapping Buffers</h3><p>CPU发布绘制命令和GPU执行绘制命令的操作是并行的，当CPU发布的速度快于GPU执行的速度时，命令队列会被填满，这时CPU就会被堵塞。处理和交换缓冲（Swap）的颜色表示的这时CPU等待GPU花费的时间。一般CPU被堵塞发生在交换缓冲区（Swap Buffers）阶段，因为在这个阶段，绘制一帧的所有绘制命令会被一起提交给GPU，造成GPU没时间处理CPU接下来发布的绘制命令。</p>
+<p>减少这方面时间消耗用到方法与 “Issuing Commands” 中用到的方法一样。</p>
+<h3 id="Miscellaneous"><a href="#Miscellaneous" class="headerlink" title="Miscellaneous"></a>Miscellaneous</h3><p>除了渲染UI，在主线程上还有很多其它操作，其它（Misc）颜色就是用来表示其它操作花费的时间。一般来说，其他时间就指在UI线程上连续绘制两帧之间的时间间隔。</p>
+<p>如果这方面花费时间太多，表明在主线程中做了太多工作，可以将这些工作放到其它线程中。Method Tracing和Systrace工具可以可视化主线程中的任务，这些可视化的信息可以帮助进行相关优化工作。</p>
+<h1 id="避免过度绘制"><a href="#避免过度绘制" class="headerlink" title="避免过度绘制"></a>避免过度绘制</h1><p>过度绘制（Overdraw）会浪费很多系统资源，比如，系统会默认绘制Activity的背景，如果再给根布局绘制背景，那么默认的Activity背景就属于无效的过度绘制。</p>
+<p>Android系统提供了 “Enable GPU Overdraw” 调试工具来检查UI的过度绘制。在“开发者选项”中打开这个选项后，如下图所示：</p>
+<p><img src="/uploads/android/gpu-overdraw.png" alt="过度绘制"></p>
+<p>可以通过界面上的颜色来判断Overdraw的次数：</p>
+<ul>
+<li>没有颜色：没有过度绘制；</li>
+<li>蓝色：过度绘制1次；</li>
+<li>绿色：过度绘制2次；</li>
+<li>粉色：过度绘制3次；</li>
+<li>红色：过度绘制4次或更多次；</li>
+</ul>
+<p>一般可以使用以下几种方式减少过度绘制次数：</p>
+<ul>
+<li>移除布局中无用的背景</li>
+</ul>
+<p>可以使用Layout Inspector工具找出那些对用户不可见的背景，然后移除这些无用的背景属性。还可以将APP的window背景颜色设置为主背景，那么所有的根布局的就不需要背景色了，从而减少过度绘制次数。</p>
+<ul>
+<li>减少布局层级</li>
+</ul>
+<p>在Android中，系统对View进行测量、布局和绘制时，都是通过对View树的遍历进行操作的。如果一个布局的层级太深，就会严重影响这些操作的速度，并且还会增加过度绘制次数。所以，在定义布局时，应该尽量减少布局层级，这样不但可以提高渲染速度，还能减少过度绘制次数。</p>
+<ul>
+<li>减少使用透明度</li>
+</ul>
+<p>绘制具有透明度属性的像素会增加过度绘制，和一般的过度绘制不一样，带有透明度的对象要求先绘制对象原本的颜色，然后再去绘制对象的透明度值，这样，一个带透明度属性的对象就需要绘制两次。像透明度视觉效果的动画，比如淡入淡出和阴影就是涉及到透明度属性，会造成过度绘制。可以通过减少使用带有透明度属性的对象来改善这种形式的过度绘制。</p>
+<h1 id="避免无用布局"><a href="#避免无用布局" class="headerlink" title="避免无用布局"></a>避免无用布局</h1><p>在“过度绘制”中已经提到过，布局层级太深会影响View进行测量、布局和绘制的速度，并且还会增加过度绘制次数。所以，要尽量避免无用布局，去减少布局的层级。下面介绍两种常用的避免无用布局的方法。</p>
+<ul>
+<li>使用merge标签</li>
+</ul>
+<p>通常会使用include标签重用layout，但是，使用include标签一般会在子View上增加一层根布局，有时在使用include中的子View时，可能并不需要这层根布局，这时就可以使用merge标签代替这个根布局。这样，子View会直接填充到include的位置，不会再添加任何额外的布局结构。</p>
+<ul>
+<li>使用ViewStub标签</li>
+</ul>
+<p>通常会在一个布局中隐藏一个子布局，在需要的时候再去显示。但是，即使将子布局进行隐藏，它们还是存在于布局中，在渲染UI时，还是会遍历这些隐藏的子布局，这时就可以使用ViewStub标签。</p>
+<p>ViewStub虽然是View的一种，但是它没有大小，没有绘制功能，也不参与布局，资源消耗非常低，将它放置在布局当中，基本上不会影响UI性能。</p>
+<p>不过，ViewStub加载的布局是不能使用merge标签的，因此，有可能导致加载出来的布局存在多余的布局结构。具体如何去取舍要根据实际情况来决定，对于那些隐藏的布局文件结构相当复杂的情况，使用ViewStub还是一种不错的选择。</p>
+<h1 id="Hierarchy-Viewer"><a href="#Hierarchy-Viewer" class="headerlink" title="Hierarchy Viewer"></a>Hierarchy Viewer</h1><p>可以使用Hierarchy Viewer工具查看布局的View树结构，并测量每个View的绘制速度。这些信息可以帮助我们对UI进行优化。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/wechatpay.jpg" alt="Zhou Zejin 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/alipay.jpg" alt="Zhou Zejin 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/性能优化/" rel="tag"># 性能优化</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/29/Android安全机制/" rel="next" title="Android安全机制">
+                <i class="fa fa-chevron-left"></i> Android安全机制
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/01/30/内存优化/" rel="prev" title="内存优化">
+                内存优化 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/Sanji.jpg"
+                alt="Zhou Zejin" />
+            
+              <p class="site-author-name" itemprop="name">Zhou Zejin</p>
+              <p class="site-description motion-element" itemprop="description">Sunny的个人Blog，主要记录Android学习总结，欢迎交流~</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/zhouzejin" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#UI渲染机制和检测工具"><span class="nav-number">1.</span> <span class="nav-text">UI渲染机制和检测工具</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#渲染机制"><span class="nav-number">1.1.</span> <span class="nav-text">渲染机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检测工具"><span class="nav-number">1.2.</span> <span class="nav-text">检测工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Input-Handing"><span class="nav-number">1.2.1.</span> <span class="nav-text">Input Handing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Animation"><span class="nav-number">1.2.2.</span> <span class="nav-text">Animation</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Measurement和Layout"><span class="nav-number">1.2.3.</span> <span class="nav-text">Measurement和Layout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Drawing"><span class="nav-number">1.2.4.</span> <span class="nav-text">Drawing</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sync和Upload"><span class="nav-number">1.2.5.</span> <span class="nav-text">Sync和Upload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Issuing-Commands"><span class="nav-number">1.2.6.</span> <span class="nav-text">Issuing Commands</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Processing和Swapping-Buffers"><span class="nav-number">1.2.7.</span> <span class="nav-text">Processing和Swapping Buffers</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Miscellaneous"><span class="nav-number">1.2.8.</span> <span class="nav-text">Miscellaneous</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#避免过度绘制"><span class="nav-number">2.</span> <span class="nav-text">避免过度绘制</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#避免无用布局"><span class="nav-number">3.</span> <span class="nav-text">避免无用布局</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Hierarchy-Viewer"><span class="nav-number">4.</span> <span class="nav-text">Hierarchy Viewer</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhou Zejin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

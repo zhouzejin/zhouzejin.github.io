@@ -1,0 +1,1326 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="进程和线程," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Zhou Zejin's Home" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="上一篇文章介绍了Android中IPC的基本原理，这一篇文章详细介绍Android中各种跨进程通信的方式。 IPC的方式具体方式有很多，但是，它们的使用场景有很大区别，下面对这些方式进行详细分析。 使用IntentAndroid中的四大组件有三大组件（Activity, Service, Receiver）都支持在In">
+<meta name="keywords" content="进程和线程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android中的IPC方式">
+<meta property="og:url" content="http://yoursite.com/2018/02/02/Android中的IPC方式/index.html">
+<meta property="og:site_name" content="Zhou Zejin&#39;s Home">
+<meta property="og:description" content="上一篇文章介绍了Android中IPC的基本原理，这一篇文章详细介绍Android中各种跨进程通信的方式。 IPC的方式具体方式有很多，但是，它们的使用场景有很大区别，下面对这些方式进行详细分析。 使用IntentAndroid中的四大组件有三大组件（Activity, Service, Receiver）都支持在Intent中传递Bundle数据。由于Bundle实现了Parcelable接口，">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/uploads/android/Messenger通信原理.png">
+<meta property="og:image" content="http://yoursite.com/uploads/android/Binder连接池.png">
+<meta property="og:updated_time" content="2018-02-06T07:55:28.831Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Android中的IPC方式">
+<meta name="twitter:description" content="上一篇文章介绍了Android中IPC的基本原理，这一篇文章详细介绍Android中各种跨进程通信的方式。 IPC的方式具体方式有很多，但是，它们的使用场景有很大区别，下面对这些方式进行详细分析。 使用IntentAndroid中的四大组件有三大组件（Activity, Service, Receiver）都支持在Intent中传递Bundle数据。由于Bundle实现了Parcelable接口，">
+<meta name="twitter:image" content="http://yoursite.com/uploads/android/Messenger通信原理.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":true},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/02/02/Android中的IPC方式/"/>
+
+
+
+
+
+  <title>Android中的IPC方式 | Zhou Zejin's Home</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Zhou Zejin's Home</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">想象力比知识更重要！</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/02/Android中的IPC方式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Zhou Zejin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/Sanji.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Zhou Zejin's Home">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Android中的IPC方式</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-02T16:05:28+08:00">
+                2018-02-02
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>上一篇文章介绍了Android中IPC的基本原理，这一篇文章详细介绍Android中各种跨进程通信的方式。</p>
+<h1 id="IPC的方式"><a href="#IPC的方式" class="headerlink" title="IPC的方式"></a>IPC的方式</h1><p>具体方式有很多，但是，它们的使用场景有很大区别，下面对这些方式进行详细分析。</p>
+<h2 id="使用Intent"><a href="#使用Intent" class="headerlink" title="使用Intent"></a>使用Intent</h2><p>Android中的四大组件有三大组件（Activity, Service, Receiver）都支持在Intent中传递Bundle数据。由于Bundle实现了Parcelable接口，所以，它能够在不同进程中进行传输。因此，当在一个进程中启动了另一个进程的Activity、Service和Receiver组件时，可以在Bundle中附加数据，并通过Intent发送给目标进程的组件，这样就实现了跨进程通信。</p>
+<p>不过，在传输的过程中，所传输的数据必须支持序列化。比如基本数据类型，字符串，Parcelable的实现类和Serializable的实现类。</p>
+<h2 id="使用文件共享"><a href="#使用文件共享" class="headerlink" title="使用文件共享"></a>使用文件共享</h2><p>文件共享式一种比较方便的跨进程通信方式，其原理是两个进程通过read/write同一个文件来交换数据。write文件的时候将对象序列化后保存到文件中，read文件的时候通过反序列化从文件中读取数据。</p>
+<p>这种IPC方式对文件的格式没有具体要求，可以是txt、xml或者Json，只要是读写双方约定的格式即可。</p>
+<p>不过这种方式存在并发read/write的问题，因此，使用这种方式时要尽量避免并发read/write文件的情况，或者使用线程同步的方式控制多个线程并发read/write文件。</p>
+<h2 id="使用Messenger"><a href="#使用Messenger" class="headerlink" title="使用Messenger"></a>使用Messenger</h2><p>可以使用Messenger创建跨进程通信的接口，这种方式需要使用Handler响应不同的Message对象（这里涉及到<a href="/2018/02/05/Android消息机制/">Android消息机制</a>），因此，Handler是使用Messenger的基础。Messenger能够让服务端和客户端共享Binder对象，这样，客户端可以使用Messenger向服务端发送Message消息。另外，客户端也能定义一个Messenger，让服务端能够回传Message消息。</p>
+<p>Messenger对AIDL做了封装，使用相对比较简单，不过，它是在一个线程中串行处理客户端请求，不需要考虑线程同步的问题。</p>
+<p>以下是使用Messenger的主要步骤：</p>
+<ol>
+<li>在服务端实现一个Handler，用来处理客户端发送的消息；</li>
+<li>在服务端使用步骤1中的Handler初始化Messenger对象；</li>
+<li>在服务端的onBind()方法中，使用步骤2中的Messenger对象创建一个Binder对象，并返回给客户端；</li>
+<li>在客户端中使用步骤3中的Binder对象初始化一个Messenger对象，它用来给服务端发送Message对象；</li>
+<li>服务端接在Handler中接收到Message对象后，进行相应的处理；</li>
+</ol>
+<p>在服务端创建Messenger接口的代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MessengerService</span> <span class="keyword">extends</span> <span class="title">Service</span> </span>&#123;</span><br><span class="line">    <span class="comment">/** Command to the service to display a message */</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MSG_SAY_HELLO = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Handler of incoming messages from clients.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">IncomingHandler</span> <span class="keyword">extends</span> <span class="title">Handler</span> </span>&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">handleMessage</span><span class="params">(Message msg)</span> </span>&#123;</span><br><span class="line">            <span class="keyword">switch</span> (msg.what) &#123;</span><br><span class="line">                <span class="keyword">case</span> MSG_SAY_HELLO:</span><br><span class="line">                    Toast.makeText(getApplicationContext(), <span class="string">"hello!"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="keyword">default</span>:</span><br><span class="line">                    <span class="keyword">super</span>.handleMessage(msg);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Target we publish for clients to send messages to IncomingHandler.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">final</span> Messenger mMessenger = <span class="keyword">new</span> Messenger(<span class="keyword">new</span> IncomingHandler());</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * When binding to the service, we return an interface to our messenger</span></span><br><span class="line"><span class="comment">     * for sending messages to the service.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IBinder <span class="title">onBind</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">        Toast.makeText(getApplicationContext(), <span class="string">"binding"</span>, Toast.LENGTH_SHORT).show();</span><br><span class="line">        <span class="keyword">return</span> mMessenger.getBinder();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在客户端使用Binder对象创建Messenger对象，并发送消息的示例代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ActivityMessenger</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</span><br><span class="line">    <span class="comment">/** Messenger for communicating with the service. */</span></span><br><span class="line">    Messenger mService = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/** Flag indicating whether we have called bind on the service. */</span></span><br><span class="line">    <span class="keyword">boolean</span> mBound;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Class for interacting with the main interface of the service.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">private</span> ServiceConnection mConnection = <span class="keyword">new</span> ServiceConnection() &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onServiceConnected</span><span class="params">(ComponentName className, IBinder service)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// This is called when the connection with the service has been</span></span><br><span class="line">            <span class="comment">// established, giving us the object we can use to</span></span><br><span class="line">            <span class="comment">// interact with the service.  We are communicating with the</span></span><br><span class="line">            <span class="comment">// service using a Messenger, so here we get a client-side</span></span><br><span class="line">            <span class="comment">// representation of that from the raw IBinder object.</span></span><br><span class="line">            mService = <span class="keyword">new</span> Messenger(service);</span><br><span class="line">            mBound = <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onServiceDisconnected</span><span class="params">(ComponentName className)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// This is called when the connection with the service has been</span></span><br><span class="line">            <span class="comment">// unexpectedly disconnected -- that is, its process crashed.</span></span><br><span class="line">            mService = <span class="keyword">null</span>;</span><br><span class="line">            mBound = <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">sayHello</span><span class="params">(View v)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (!mBound) <span class="keyword">return</span>;</span><br><span class="line">        <span class="comment">// Create and send a message to the service, using a supported 'what' value</span></span><br><span class="line">        Message msg = Message.obtain(<span class="keyword">null</span>, MessengerService.MSG_SAY_HELLO, <span class="number">0</span>, <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            mService.send(msg);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (RemoteException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</span><br><span class="line">        setContentView(R.layout.main);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onStart</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onStart();</span><br><span class="line">        <span class="comment">// Bind to the service</span></span><br><span class="line">        bindService(<span class="keyword">new</span> Intent(<span class="keyword">this</span>, MessengerService.class), mConnection,</span><br><span class="line">            Context.BIND_AUTO_CREATE);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onStop</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onStop();</span><br><span class="line">        <span class="comment">// Unbind from the service</span></span><br><span class="line">        <span class="keyword">if</span> (mBound) &#123;</span><br><span class="line">            unbindService(mConnection);</span><br><span class="line">            mBound = <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上面的示例没有展示服务端如何回复客户端。不过，如果服务端需要回复客户端，有一点非常关键，那就是当客户端发送消息的时候，需要把接收服务器端回复的Messenger通过Message的replyTo参数传递给服务端，作为通信的桥梁。</p>
+<p>通过Messenger进行IPC的原理图如下所示：</p>
+<p><img src="/uploads/android/Messenger通信原理.png" alt="Messenger通信原理"></p>
+<h2 id="使用AIDL"><a href="#使用AIDL" class="headerlink" title="使用AIDL"></a>使用AIDL</h2><p>Messenger串行处理客户端发送的消息，如果大量的消息同时发送到服务端，Messenger方式就不太合适了；同时，Messenger的主要作用是传递消息，如果要跨进程调用服务端方法，Messenger也无法做到。不过，AIDL可以实现这样的需求。</p>
+<p>AIDL是一种接口定义语言，用于约束两个进程间的通讯规则，在进行IPC时，通信信息会被转换为AIDL协议消息，然后发送给对方，对方接收到AIDL协议消息后，再转换成相应的对象。</p>
+<p>AIDL是由Binder机制实现的，Binder机制以在上一篇文章中介绍了，下面阐述如何使用AIDL进行IPC。</p>
+<h3 id="创建aidl文件"><a href="#创建aidl文件" class="headerlink" title="创建aidl文件"></a>创建aidl文件</h3><p>可以使用Java语法定义aidl文件，每个文件必须定义一个interface，并将interface只能有一个，然后在interface声明调用的方法。</p>
+<p>AIDL支持以下数据类型：</p>
+<ul>
+<li>所有Java支持的原子数据类型（比如int, long, char, boolean等）</li>
+<li>String</li>
+<li>CharSequence</li>
+<li>List：只支持ArrayList，里面的每个元素都必须能被AIDL支持</li>
+<li>Map：只支持HashMap，里面的每个元素都必须被AIDL支持，包括key和value</li>
+<li>Parcelable：所有实现了Parcelable接口的对象</li>
+<li>AIDL：所有AIDL接口本身也可以在AIDL文件中使用</li>
+</ul>
+<p>在定义AIDL接口时，需要注意以下几点：</p>
+<ul>
+<li>如果AIDL文件中用到了自定义的Parcelable对象，那么必须新建一个和它同名的aidl文件，并在其中声明为parcelable类型。</li>
+<li>自定义的Parcelable对象和AIDL对象必须在aidl文件中要显示import，即使他们和当前的aidl文件定义在同一个包内。</li>
+<li>AIDL除了原子数据类型外，其它类型的参数必须标明数据流动的方向：in、out或者inout，原子类型默认方向是in，并且不能被改变。</li>
+<li>要根据具体情况标明参数的数据流动方向，不能一概使用inout，因为这在底层是有开销的。</li>
+<li>AIDL接口只支持声明方法，不支持声明static常量，这一点与Java中的接口不一样。</li>
+</ul>
+<p>下面是一个定义AIDL接口的示例：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// IRemoteService.aidl</span></span><br><span class="line"><span class="keyword">package</span> com.example.android;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Declare any non-default types here with import statements</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/** Example service interface */</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">IRemoteService</span> </span>&#123;</span><br><span class="line">    <span class="comment">/** Request the process ID of this service, to do evil things with it. */</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">getPid</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * Demonstrates some basic types that you can use as parameters</span></span><br><span class="line"><span class="comment">     * and return values in AIDL.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">basicTypes</span><span class="params">(<span class="keyword">int</span> anInt, <span class="keyword">long</span> aLong, <span class="keyword">boolean</span> aBoolean, <span class="keyword">float</span> aFloat,</span></span></span><br><span class="line"><span class="function"><span class="params">            <span class="keyword">double</span> aDouble, String aString)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="实现接口"><a href="#实现接口" class="headerlink" title="实现接口"></a>实现接口</h3><p>创建完AIDL接口后，Build项目，这时会根据aidl文件生成一个对应Java接口文件。这个接口包含了一个名为Stub的子类，它是一个Binder接口，服务端需要实现这个接口提供对应的服务。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> IRemoteService.Stub mBinder = <span class="keyword">new</span> IRemoteService.Stub() &#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getPid</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Process.myPid();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">basicTypes</span><span class="params">(<span class="keyword">int</span> anInt, <span class="keyword">long</span> aLong, <span class="keyword">boolean</span> aBoolean,</span></span></span><br><span class="line"><span class="function"><span class="params">        <span class="keyword">float</span> aFloat, <span class="keyword">double</span> aDouble, String aString)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Does nothing</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>在实现AIDL接口定义的方法时，需要注意：</p>
+<ul>
+<li>要考虑多线程问题；</li>
+<li>默认情况下，客户端调用服务端方法（RPC）是同步的，如果客户端的UI线程进行RPC，并且这个RPC比较耗时，会造成客户端ANR。所以，在需要的时候，在工作线程中进行RPC；</li>
+<li>进行RPC时抛出的Exception不会被发送到客户端；</li>
+</ul>
+<h3 id="将接口暴露给客户端"><a href="#将接口暴露给客户端" class="headerlink" title="将接口暴露给客户端"></a>将接口暴露给客户端</h3><p>服务端实现AIDL接口后，需要将接口暴露给客户端。一般是通过Service组件，在其onBind()方法中将实现的Binder接口返回给客户端，示例代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RemoteService</span> <span class="keyword">extends</span> <span class="title">Service</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.onCreate();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> IBinder <span class="title">onBind</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Return the interface</span></span><br><span class="line">        <span class="keyword">return</span> mBinder;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> IRemoteService.Stub mBinder = <span class="keyword">new</span> IRemoteService.Stub() &#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getPid</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> Process.myPid();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">basicTypes</span><span class="params">(<span class="keyword">int</span> anInt, <span class="keyword">long</span> aLong, <span class="keyword">boolean</span> aBoolean,</span></span></span><br><span class="line"><span class="function"><span class="params">            <span class="keyword">float</span> aFloat, <span class="keyword">double</span> aDouble, String aString)</span> </span>&#123;</span><br><span class="line">            <span class="comment">// Does nothing</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果客户端和服务端属于不同的项目，需要将服务端的aidl文件复制到客户端，这时客户端才能声明AIDL定义的接口，并进行使用。</p>
+<p>当客户端调用bindService()方法连接服务端时，onServiceConnected()回调方法会接收到服务端返回的Binder接口，将其转换为AIDL定义接口后，就可以调用服务端对应的方法了，示例代码如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">IRemoteService mIRemoteService;</span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> ServiceConnection mConnection = <span class="keyword">new</span> ServiceConnection() &#123;</span><br><span class="line">    <span class="comment">// Called when the connection with the service is established</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onServiceConnected</span><span class="params">(ComponentName className, IBinder service)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// Following the example above for an AIDL interface,</span></span><br><span class="line">        <span class="comment">// this gets an instance of the IRemoteInterface, which we can use to call on the service</span></span><br><span class="line">        mIRemoteService = IRemoteService.Stub.asInterface(service);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Called when the connection with the service disconnects unexpectedly</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onServiceDisconnected</span><span class="params">(ComponentName className)</span> </span>&#123;</span><br><span class="line">        Log.e(TAG, <span class="string">"Service has unexpectedly disconnected"</span>);</span><br><span class="line">        mIRemoteService = <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h3 id="AIDL的进阶使用"><a href="#AIDL的进阶使用" class="headerlink" title="AIDL的进阶使用"></a>AIDL的进阶使用</h3><h4 id="跨进程监听器"><a href="#跨进程监听器" class="headerlink" title="跨进程监听器"></a>跨进程监听器</h4><p>通常会有这样的需求：客户端需要使用监听器去监听服务端数据的变化，然后做相应的处理。一般来说，会这样实现这个需求：客户端向服务端注册一个监听器，注册成功后，服务器在数据变化时，回调监听器里面的方法通知客户端数据发生变化；当客户端不需要数据监听数据变化时，就会向服务器注销这个监听器。</p>
+<p>在AIDL中，需要使用AIDL接口定义监听器，然后，在服务器的AIDL接口中定义registerListener()和unRegisterListener()方法。由于要支持多线程，需要在服务端定义一个List去管理各个客户端的Listener，一般会想到使用CopyOnWriteArrayList去存储Listener，因为它支持多线程。不过，如果这样实现，我们可以发现：客户端可以正常register监听器，但是，客户端unRegister同一个监听器的时候，却总是失败！</p>
+<p>之所以会出现这个情况，是因为在客户端中，虽然register和unRegister的是同一个Listener对象，但是，Listener对象的数据通过Binder机制跨进程传输到服务端，进行反序列化后，在服务端却是不同的对象。总的来说，对象是不能跨进程直接传输的。</p>
+<p>为了解决这个问题，就需要使用<strong>RemoteCallbackList</strong>，它是系统专门提供的用于删除跨进程Listener对象的接口。RemoteCallbackList是一个泛型，支持管理任意的AIDL接口，所以，可以使用它来代替CopyOnWriteArrayList管理客户端的Listener对象，实现跨进程监听器。</p>
+<p>RemoteCallbackList的内部有一个Map结构专门用来保存所有的AIDL回调，其key是IBinder类型，value是Callback类型。其Map结构的具体声明如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ArrayMap&lt;IBinder, Callback&gt; mCallbacks = <span class="keyword">new</span> ArrayMap&lt;IBinder, Callback&gt;();</span><br></pre></td></tr></table></figure>
+<p>其中Callback中封装了正真的远程Listener。当客户端register时，它会把Listener的信息存入到Map结构中，key和value的获取过程如下所示：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">IBinder key = listener.asBinder();</span><br><span class="line">Callback value = <span class="keyword">new</span> Callback(listener, cookie);</span><br></pre></td></tr></table></figure>
+<p>可以看到，Map结构的key值是Listener对应的Binder对象。之所以会这样，是因为Listener对象虽然是跨进程的，在客户端和服务端会是不同的对象，不过，这个跨进程的Listener在底层对应的Binder对象是同一个。正是利用这个特性，RemoteCallbackList可以正确删除掉对应的Listener对象。</p>
+<p>同时，RemoteCallbackList内部自动实现了线程同步的功能，并且，在客户端进程意外终止后，也能够自动删除客户端注册的Listener对象。</p>
+<p>RemoteCallbackList常用的API有：</p>
+<ul>
+<li>register和unregister：用来注册和注销客户端对应的Listener对象；</li>
+<li>beginBroadcast和finishBroadcast：开始使用和结束使用RemoteCallbackList对象，必须成对使用；</li>
+<li>getBroadcastItem(int pos)：根据pos获取对应的Listener对象；</li>
+</ul>
+<h4 id="多线程问题"><a href="#多线程问题" class="headerlink" title="多线程问题"></a>多线程问题</h4><ol>
+<li><p>客户端调用服务端的远程方法时，远程方法运行在服务端的Binder线程池中，同时，客户端线程会被阻塞，如果这个线程是UI线程，并且远程方法执行比较耗时，会造成客户端出现ANR，所以，不要在UI线程中调用耗时的远程方法。</p>
+</li>
+<li><p>服务端的<strong>远程方法</strong>（通过实现Binder接口的方法）本身就运行在服务端的Binder线程池中，所以，服务端的<strong>远程方法</strong>本身就可以执行大量耗时操作，切记不要在远程方法中开启线程执行异步任务，除非明确知道开启异步线程的目的。</p>
+</li>
+<li><p>当服务端调用客户端Listener中的方法时，该方法也运行在Binder线程池中，不过是客户端的线程池，所以，相对于服务端，Listener中的方法也是<strong>远程方法</strong>，因此，也不能在服务端（要注意Service组件运行在UI线程）调用客户端的耗时远程方法。所以，要确保客户端的耗时远程方法运行在服务端的<strong>非UI线程</strong>，否则，会导致服务端无法及时响应。</p>
+</li>
+<li><p>客户端的远程方法运行在客户端的Binder线程池中，因此，不能在其远程方法中修改UI。如果要修改UI，需要使用Handler切换到UI线程。</p>
+</li>
+<li><p>服务端的Binder连接有可能意外断开，为了程序的健壮性，客户端可以在断开时，重新连接服务端。有两种方法实现这个功能：第一种是客户端连接服务端成功后，使用Binder.linkToDeath()方法设置DeathRecipient监听器，这样，在Binder断开时，客户端会收到binderDied()回调方法；第二种是在客户端连接服务端时，重载onServiceDisconnected()方法。这两种方法的区别是，binderDied()回调方法运行在客户端的Binder线程池中，而onServiceDisconnected()方法运行在UI线程中。</p>
+</li>
+</ol>
+<h4 id="权限控制"><a href="#权限控制" class="headerlink" title="权限控制"></a>权限控制</h4><p>默认情况下，远程服务任何客户端都能连接，这是不安全的，可以给服务加入权限验证功能。通常有两种方法：</p>
+<ul>
+<li>在onBind()方法中验证</li>
+</ul>
+<p>可以在服务端的onBind()方法中进行权限验证。下面介绍在onBind()方法中使用Permission验证：</p>
+<p>1.在Manifest文件中声明所需的权限</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">permission</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:name</span>=<span class="string">"com.example.ipc.permission.ACCESS_DADA"</span></span></span><br><span class="line"><span class="tag">	<span class="attr">android:protectionLevel</span>=<span class="string">"normal"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>2.在onBind()方法中做权限验证</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">onBind</span><span class="params">(Intent intent)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">int</span> check = checkCallingSelfPermission(<span class="string">"com.example.ipc.permission.ACCESS_DADA"</span>);</span><br><span class="line">	<span class="keyword">if</span> (check == PackageManager.PERMISSION_DENIED) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">	<span class="keyword">return</span> mBinder; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果权限不通过，就直接返回null，那么客户端就无法访问这个服务端。</p>
+<p>3.如果客户端需要绑定声明权限的服务端，需要在Manifest中声明权限</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"com.example.ipc.permission.ACCESS_DADA"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>这种方式也可以用于Messenger中。</p>
+<ul>
+<li>在onTransact()方法中验证</li>
+</ul>
+<p>可以在服务端实现Binder接口时，重载onTransact()方法进行权限验证。下面介绍在onTransact()方法中获取客户端的Uid验证包名：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onTransact</span><span class="params">(<span class="keyword">int</span> code, Parcel data, Parcel reply, <span class="keyword">int</span> flags)</span> </span></span><br><span class="line"><span class="function">		<span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">	String packageName = <span class="keyword">null</span>;</span><br><span class="line">	String[] packages = getPackageManager().getPackagesForUid(getCallingUid());</span><br><span class="line">	<span class="keyword">if</span> (packages != <span class="keyword">null</span> &amp;&amp; packages.length &gt; <span class="number">0</span>) &#123;</span><br><span class="line">		packageName = packages[<span class="number">0</span>];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (packageName == <span class="keyword">null</span> || !packageName.startsWith(<span class="string">"com.example.ipc"</span>)) &#123;</span><br><span class="line">		<span class="keyword">return</span> fasle;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="keyword">super</span>.onTransact(code, data, reply, flags);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果验证失败，就返回false，那么，客户端执行远程方法会失败。这种方式可以让客户端连接到服务端，但无法执行服务端的远程方法。</p>
+<p>还可以使用getCallingPid()方法获取Pid，去验证客户端的包名，方法与上面介绍的基本一样。</p>
+<p>不过，除了上述两种方法，还可以使用其它方式验证权限，比如为Service组件指定android:permission属性等，这里就不进行介绍了。</p>
+<h2 id="使用ContentProvider"><a href="#使用ContentProvider" class="headerlink" title="使用ContentProvider"></a>使用ContentProvider</h2><p>ContentProvider是Android系统中专门用于不同应用间进行数据数据共享的方式，从这点来看，ContentProvider本身就适合进程间通信。和AIDL一样，它的底层也是通过Binder实现的，不过，系统对其进行了封装，使用过程比AIDL要简单。ContentProvider的具体使用这里就不介绍了，下面主要阐述使用ContentProvider进行IPC需要注意的细节。</p>
+<p>创建一个ContentProvider一般需要实现六个抽象方法：onCreate、query、update、insert、delete和getType。根据Binder原理，这六个方法都运行在ContentProvider的进程中，不过，除了onCreate方法由系统回调并运行在<strong>主线程</strong>中，其它五个方法均由其它进程回调且运行在<strong>Binder线程池</strong>中。因此，不能在onCreate方法中做耗时操作，并且，其它应用调用另外五个<strong>远程方法</strong>时，如果这些方法比较耗时，不要在UI线程中调用。</p>
+<p>由于query、update、insert、delete这四个方法会涉及到数据源的读写操作，并且它们运行在Binder线程池中，所以在具体实现这些方法时，要实现线程同步操作，保证线程安全。</p>
+<h2 id="使用Socket"><a href="#使用Socket" class="headerlink" title="使用Socket"></a>使用Socket</h2><p>Socket主要用于网络通信，网络通信的服务端和客户端处于不同的主机，既然这样，处于同一个设备的服务端和客户端就更加能够使用Socket进行通信。因此，可以在Android系统中使用Socket方式进行进程间通信。Socket的具体使用这里就不介绍了，下面主要阐述在Android中使用Socket进行IPC需要注意的地方。</p>
+<p>使用Socket进行通信，需要声明网络权限：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.INTERNET"</span> /&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">uses-permission</span> <span class="attr">android:name</span>=<span class="string">"android.permission.ACCESS_NETWORK_STATE"</span> /&gt;</span></span><br></pre></td></tr></table></figure>
+<p>另外，不要在主线程中访问进行网络通信，因为网络操作一般来说都比较耗时，如果放在主线程中会影响应用的响应效率。</p>
+<h1 id="Binder连接池"><a href="#Binder连接池" class="headerlink" title="Binder连接池"></a>Binder连接池</h1><p>在使用AIDL时，如果一个项目中，有多个业务模块都要使用AIDL提供服务，按照正常的实现方式，会创建多个Service组件去实现这些服务。但是，Service组件是一种系统资源，过多使用会影响系统性能；并且，在一个应用中使用多个Service，用户在查看APP详情的时候，会发现这个应用会有多个服务同时在运行，给用户造成该应用浪费系统资源的印象。为了解决这个问题，需要减少Service的数量，将所有AIDL接口都放在同一个Service中去管理。</p>
+<p>要实现用一个Service组件管理多个AIDL接口的需求，就要使用到Binder连接池：</p>
+<ol>
+<li><p>每个业务模块创建自己的AIDL接口，并实现这个接口，不过，不同的业务模块之间不能耦合；实现接口后，每个AIDL模块向服务端提供唯一的标识符和对应的Binder对象。</p>
+</li>
+<li><p>对于服务端，只需要一个Service组件，提供一个queryBinder接口，这个接口能根据AIDL模块的标识符返回对应的Binder对象给客户端。</p>
+</li>
+<li><p>对于客户端，通过AIDL模块的标识符调用远程queryBinder方法，获取对应的Binder对象后，就可以使用这个Binder对象调用该模块的远程方法。</p>
+</li>
+</ol>
+<p>Binder连接池的主要作用是将客户端对每个业务模块的Binder请求统一转发到远程的Service中去执行，从而避免了重复创建Service组件，其工作原理如下图所示：</p>
+<p><img src="/uploads/android/Binder连接池.png" alt="Binder连接池"></p>
+<p>以上阐述了Binder连接池的实现原理，具体实现可以参考《Android开发艺术探索》相关章节。</p>
+<h1 id="使用合适的IPC方式"><a href="#使用合适的IPC方式" class="headerlink" title="使用合适的IPC方式"></a>使用合适的IPC方式</h1><p>上面介绍了各种IPC方式，但每种IPC方式都有其使用场景，可以根据具体需求选择不同IPC方式。</p>
+<p>下表总结了Android中各种IPC方式的优缺点以及使用场景：</p>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>优点</th>
+<th>缺点</th>
+<th>使用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Intent</td>
+<td>简单易用</td>
+<td>只支持传输Bundle数据</td>
+<td>四大组件之间的进程间通信</td>
+</tr>
+<tr>
+<td>文件共享</td>
+<td>简单易用</td>
+<td>不适合并发场景，无法做到即时通信</td>
+<td>无并发访问、交换简单数据并且实时性不高的场景</td>
+</tr>
+<tr>
+<td>Messenger</td>
+<td>支持一对多串行通信，支持实时通信</td>
+<td>不太适合高并发场景，不支持RPC，只支持传输Bundle数据</td>
+<td>低并发的一对多的即时通信，并且无RPC要求</td>
+</tr>
+<tr>
+<td>AIDL</td>
+<td>支持一对多并发通信，支持实时通信</td>
+<td>使用比较复杂，需要处理线程同步</td>
+<td>一对多通信，或者有RPC需求</td>
+</tr>
+<tr>
+<td>ContentProvider</td>
+<td>支持一对多并发数据共享</td>
+<td>可理解为受约束的AIDL，主要提供对数据源的CRUD操作</td>
+<td>一对多的进程间的数据共享</td>
+</tr>
+<tr>
+<td>Socket</td>
+<td>功能强大，支持一对多并发实时通信</td>
+<td>实现比较繁琐，不支持直接RPC</td>
+<td>网络数据交换</td>
+</tr>
+</tbody>
+</table>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/uploads/wechatpay.jpg" alt="Zhou Zejin 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/uploads/alipay.jpg" alt="Zhou Zejin 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/进程和线程/" rel="tag"># 进程和线程</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/02/01/Android中的IPC介绍/" rel="next" title="Android中的IPC介绍">
+                <i class="fa fa-chevron-left"></i> Android中的IPC介绍
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/02/05/Android消息机制/" rel="prev" title="Android消息机制">
+                Android消息机制 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微博</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+      <div id="sidebar-dimmer"></div>
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/Sanji.jpg"
+                alt="Zhou Zejin" />
+            
+              <p class="site-author-name" itemprop="name">Zhou Zejin</p>
+              <p class="site-description motion-element" itemprop="description">Sunny的个人Blog，主要记录Android学习总结，欢迎交流~</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/zhouzejin" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#IPC的方式"><span class="nav-number">1.</span> <span class="nav-text">IPC的方式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Intent"><span class="nav-number">1.1.</span> <span class="nav-text">使用Intent</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用文件共享"><span class="nav-number">1.2.</span> <span class="nav-text">使用文件共享</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Messenger"><span class="nav-number">1.3.</span> <span class="nav-text">使用Messenger</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用AIDL"><span class="nav-number">1.4.</span> <span class="nav-text">使用AIDL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建aidl文件"><span class="nav-number">1.4.1.</span> <span class="nav-text">创建aidl文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实现接口"><span class="nav-number">1.4.2.</span> <span class="nav-text">实现接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将接口暴露给客户端"><span class="nav-number">1.4.3.</span> <span class="nav-text">将接口暴露给客户端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AIDL的进阶使用"><span class="nav-number">1.4.4.</span> <span class="nav-text">AIDL的进阶使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#跨进程监听器"><span class="nav-number">1.4.4.1.</span> <span class="nav-text">跨进程监听器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#多线程问题"><span class="nav-number">1.4.4.2.</span> <span class="nav-text">多线程问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#权限控制"><span class="nav-number">1.4.4.3.</span> <span class="nav-text">权限控制</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用ContentProvider"><span class="nav-number">1.5.</span> <span class="nav-text">使用ContentProvider</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用Socket"><span class="nav-number">1.6.</span> <span class="nav-text">使用Socket</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Binder连接池"><span class="nav-number">2.</span> <span class="nav-text">Binder连接池</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用合适的IPC方式"><span class="nav-number">3.</span> <span class="nav-text">使用合适的IPC方式</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Zhou Zejin</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a></div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
