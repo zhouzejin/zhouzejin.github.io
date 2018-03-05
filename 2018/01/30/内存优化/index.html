@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Zhou Zejin&#39;s Home">
 <meta property="og:description" content="由于Android系统的沙箱机制，分别给每个APP的内存大小是有限的。为了APP能在有限的内存下流畅地运行，通常需要对内存进行一定的优化。 Java中的存储空间在Java中，存储空间通常包括以下几个部分：  寄存器速度最快的存储场所，处于CPU内部，一般不在程序中进行控制。  栈存放基本的数据类型和对象引用。  堆存放使用new关键字创建的对象本身，由Java虚拟机的自动回收机制管理。  静态存储">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-31T02:37:36.707Z">
+<meta property="og:updated_time" content="2018-03-05T10:31:04.369Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="内存优化">
 <meta name="twitter:description" content="由于Android系统的沙箱机制，分别给每个APP的内存大小是有限的。为了APP能在有限的内存下流畅地运行，通常需要对内存进行一定的优化。 Java中的存储空间在Java中，存储空间通常包括以下几个部分：  寄存器速度最快的存储场所，处于CPU内部，一般不在程序中进行控制。  栈存放基本的数据类型和对象引用。  堆存放使用new关键字创建的对象本身，由Java虚拟机的自动回收机制管理。  静态存储">
@@ -419,14 +419,16 @@
 <ul>
 <li>对常量使用static修饰，可以加快访问速度；</li>
 <li>尽量使用静态方法，静态方法比普通方法的访问速度更快；</li>
+<li>尽量使用静态内部类，这样可以避免内部类导致的潜在内存泄露；</li>
 <li>减少不必要的成员变量；</li>
 <li>减少不必要的对象，尽量使用基本类型；</li>
-<li>尽量不使用枚举和迭代器；</li>
+<li>尽量不使用枚举和迭代器，因为枚举占用的内存比整型大，迭代器会占用一定的内存空间；</li>
 <li>对Cursor、Receiver、Sensor、File等对象，使用完毕后要注意回收和注销；</li>
 <li>避免使用IoC（控制反转）框架，这些框架通常使用注解和反射实现，大量使用会降低性能；</li>
 <li>使用RenderScript或OpenGL进行非常复杂的绘图操作；</li>
 <li>使用SurfaceView代替View进行频繁的绘图操作；</li>
 <li>尽量使用ViewHolder复用View；</li>
+<li>使用Android特有的数据结构，比如SparseArray和Pair，它们在Android平台上具有更好的性能；</li>
 </ul>
 <h1 id="Memory-Profiler"><a href="#Memory-Profiler" class="headerlink" title="Memory Profiler"></a>Memory Profiler</h1><p>Android Profiler工具中的Memory Profiler组件能够可视化APP内存使用情况，帮助开发者定位内存泄露。这个工具还提供了捕获堆内存释放、强制进行垃圾回收，以及跟踪内存分配等功能，帮助我们更好地对内存进行优化。</p>
 <h1 id="更多性能优化"><a href="#更多性能优化" class="headerlink" title="更多性能优化"></a>更多性能优化</h1><p>Android的性能优化是一个比较大的话题，这里只介绍了常用的<a href="/2018/01/29/UI优化/">UI优化</a>和<a href="/2018/01/30/内存优化/">内存优化</a>，其它方面的性能优化可以参考<a href="https://developer.android.com/topic/performance/index.html" target="_blank" rel="noopener">性能优化的官方文档</a>。</p>
@@ -608,7 +610,7 @@ var jiathis_config={
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

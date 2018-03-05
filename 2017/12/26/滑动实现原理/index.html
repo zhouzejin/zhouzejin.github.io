@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://yoursite.com/uploads/android/系统坐标系.png">
 <meta property="og:image" content="http://yoursite.com/uploads/android/视图坐标系.png">
 <meta property="og:image" content="http://yoursite.com/uploads/android/坐标系常用API.png">
-<meta property="og:updated_time" content="2017-12-26T12:01:52.420Z">
+<meta property="og:updated_time" content="2018-02-27T06:14:29.883Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="滑动实现原理">
 <meta name="twitter:description" content="滑动的产生View的滑动，本质上是移动View，即改变View所处的位置，这点和动画效果类似，都是通过不断改变View的坐标来实现的。 因此，要产生滑动效果，需要监听用户的触摸事件，根据事件的坐标信息不断改变View的坐标，使View跟随用户的触摸进行移动。 滑动是相对的移动，要实现滑动，就必须了解Android系统中的坐标体系和触摸事件(MotionEvent)，接下来对坐标体系和触摸事件进行说">
@@ -405,6 +405,34 @@
 <h1 id="触摸事件与坐标系"><a href="#触摸事件与坐标系" class="headerlink" title="触摸事件与坐标系"></a>触摸事件与坐标系</h1><p>触摸事件MotionEvent中封装了常用的事件常量，这些常量定义了不同的类型的触摸事件，可以使用getAction()方法获取。</p>
 <p>下面用一幅图来描述一些获取坐标值和相对距离的常用API：</p>
 <p><img src="/uploads/android/坐标系常用API.png" alt="坐标系常用API"></p>
+<p>根据上图，可以得出View的宽高和坐标的关系：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">width = right - left</span><br><span class="line">height = bottom - top</span><br></pre></td></tr></table></figure>
+<p>从Android3.0开始，View增加了额外参数：x、y、translationX和translationY，其中x和y是View左上角的坐标，而translationX和translationY是View左上角相对于父View的偏移量。View的各个位置参数的关系如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x = left + translationX</span><br><span class="line">y = top + translationY</span><br></pre></td></tr></table></figure>
+<p>需要注意的是，View在移动过程中，left和top表示的是最初左上角的位置信息，其值不会发生改变，具体发生变化的是x、y、translationX和translationY这几个参数。</p>
+<h1 id="滑动相关的对象"><a href="#滑动相关的对象" class="headerlink" title="滑动相关的对象"></a>滑动相关的对象</h1><p>MotionEvent只能获取最基本的触摸事件，如果要获取更丰富的触摸信息，去实现用户体验更好的滑动效果，那么需要使用下面介绍的相关对象。</p>
+<h2 id="TouchSlop"><a href="#TouchSlop" class="headerlink" title="TouchSlop"></a>TouchSlop</h2><p>TouchSlop表示系统能够识别出的最小滑动距离，如果在屏幕上进行滑动操作时，滑动的距离小于这个常量，系统会忽略这个滑动操作。这个常量与具体设备有关，不同的设备上值可能不同，获取方式如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ViewConfiguration.get(getContext()).getScaledTouchSlop();</span><br></pre></td></tr></table></figure>
+<p>在具体处理滑动时，可以使用这个常量做一些过滤，比如，当滑动的距离小于这个常量时，忽略这个滑动操作，这样可以有更好的用户体验。</p>
+<h2 id="VelocityTracker"><a href="#VelocityTracker" class="headerlink" title="VelocityTracker"></a>VelocityTracker</h2><p>VelocityTracker用来追踪滑动的速度，包括水平和垂直方向的速度。使用方式如下：</p>
+<ul>
+<li>在View的onTouchEvent()方法中追踪当前事件的速度：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">VelocityTracker tracker = VelocityTracker.obtain();</span><br><span class="line">tracker.addMovement(event);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>速度追踪完毕后，获取当前事件的速度：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tracker.computeCurrentVelocity(<span class="number">1000</span>);</span><br><span class="line"><span class="keyword">int</span> xVelocity = (<span class="keyword">int</span>) tracker.getXVelocity();</span><br><span class="line"><span class="keyword">int</span> yVelocity = (<span class="keyword">int</span>) tracker.getYVelocity();</span><br></pre></td></tr></table></figure>
+<ul>
+<li>不需要使用时，回收资源：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tracker.clear();</span><br><span class="line">tracker.recycle();</span><br></pre></td></tr></table></figure>
+<h2 id="GestureDetector"><a href="#GestureDetector" class="headerlink" title="GestureDetector"></a>GestureDetector</h2><p>GestureDetector用于手势检测，可以用来辅助检测用户的单击、滑动、长按、双击等手势。一般使用分为两步：</p>
+<ul>
+<li>创建GestureDetector对象并实现OnGestureListener接口</li>
+<li>在目标View的onTouchEvent()方法中调用GestureDetector.onTouchEvent(event)方法</li>
+</ul>
+<p>当然，在实际开发中，可以不使用GestureDetector，不过建议：如果只监听滑动相关的事件，可以直接在View的onTouchEvent()方法中实现，如果要监听双击等事件，最好使用GestureDetector。</p>
 
       
     </div>
@@ -464,8 +492,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/21/事件拦截机制/" rel="next" title="事件拦截机制">
-                <i class="fa fa-chevron-left"></i> 事件拦截机制
+              <a href="/2017/12/21/事件分发机制/" rel="next" title="事件分发机制">
+                <i class="fa fa-chevron-left"></i> 事件分发机制
               </a>
             
           </div>
@@ -583,7 +611,7 @@ var jiathis_config={
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">35</span>
+                  <span class="site-state-item-count">37</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -655,7 +683,7 @@ var jiathis_config={
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#滑动的产生"><span class="nav-number">1.</span> <span class="nav-text">滑动的产生</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#系统坐标系"><span class="nav-number">2.</span> <span class="nav-text">系统坐标系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#视图坐标系"><span class="nav-number">3.</span> <span class="nav-text">视图坐标系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#触摸事件与坐标系"><span class="nav-number">4.</span> <span class="nav-text">触摸事件与坐标系</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#滑动的产生"><span class="nav-number">1.</span> <span class="nav-text">滑动的产生</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#系统坐标系"><span class="nav-number">2.</span> <span class="nav-text">系统坐标系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#视图坐标系"><span class="nav-number">3.</span> <span class="nav-text">视图坐标系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#触摸事件与坐标系"><span class="nav-number">4.</span> <span class="nav-text">触摸事件与坐标系</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#滑动相关的对象"><span class="nav-number">5.</span> <span class="nav-text">滑动相关的对象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#TouchSlop"><span class="nav-number">5.1.</span> <span class="nav-text">TouchSlop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#VelocityTracker"><span class="nav-number">5.2.</span> <span class="nav-text">VelocityTracker</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GestureDetector"><span class="nav-number">5.3.</span> <span class="nav-text">GestureDetector</span></a></li></ol></li></ol></div>
             
 
           </div>
